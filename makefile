@@ -101,7 +101,7 @@ BACKEND_SYNTH_DIR = backend/synthesis/work
 BACKEND_LAYOUT_DIR = backend/layout/work
 CSVS_DIR = CSVs
 
-XCELIUM_MOD = cdn/xcelium/xcelium2209
+XCELIUM_MOD = cdn/xcelium/xcelium2509
 GENUS_MOD = cdn/genus/genus211
 INNOVUS_MOD = cdn/innovus/innovus211
 INNOVUS_MOD_DDI = cdn/ddi/ddi251
