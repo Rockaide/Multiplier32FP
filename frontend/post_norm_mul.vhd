@@ -151,7 +151,8 @@ begin
 		else
 			if s_exp_10b(9)='1' or s_exp_10b="0000000000" then
 				v_shr1 := (others =>'0');
-				v_shl1 := ("0000"&s_zeros) - s_exp_10a;
+				--v_shl1 := ("0000"&s_zeros) - s_exp_10a;
+				v_shl1 := s_exp_10a - "0000000001";
 				s_expo1 <= "000000001";
 			elsif s_exp_10b(8)='1' then
 				v_shr1 := (others =>'0');
