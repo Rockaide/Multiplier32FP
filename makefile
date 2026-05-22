@@ -410,6 +410,33 @@ flow_full_single_config:
 	@echo "          STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
 	@echo "========================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
+	
+# --- Complete flow genus ---
+sweep_full_power_analysis:
+	@mkdir -p $(CSVS_DIR)
+	@echo "========================================================="
+	@echo "          GENERATING BASE SYNTHESIS FILES                "
+	@echo "========================================================="
+	@for freq in 10; do \
+		for lib in worst; do \
+			echo "Running base synthesis for $$freq MHz | $$lib"; \
+			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=base; \
+		done \
+	done
+	@echo "========================================================="
+	@echo "         STARTING GATE-LEVEL VCD SWEEPS                  "
+	@echo "========================================================="
+	@for freq in 10 ; do \
+		for lib in worst; do \
+			for runtime in 0 500 1000; do \
+				echo "==============================================================="; \
+				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
+				echo "==============================================================="; \
+				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
+				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
+			done \
+		done \
+	done
 # =========================================================================
 # Utilities & Visualizers
 # =========================================================================

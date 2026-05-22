@@ -27,7 +27,7 @@ set LIB_DIR ${TECH_DIR}/gsclib045_svt_v4.4/gsclib045/timing
 
 #set LEF_DIR ${TECH_DIR}/gsclib045_svt_v4.4/gsclib045/lef
 #export LEF_DIR ${TECH_DIR}/gsclib045_svt_v4.4/gsclib045/lef
-lappend LEF_DIR ${TECH_DIR}/giolib045_v3.3/lef
+lappend LEF_DIR ${TECH_DIR}/gsclib045_svt_v4.4/gsclib045/lef
 
 
 

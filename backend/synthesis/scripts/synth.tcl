@@ -78,7 +78,7 @@ set_db init_hdl_search_path "${DEV_DIR} ${FRONTEND_DIR}"
 #read_hdl -language vhdl $rtl_files 
 #Da pra fazer um -f filelist
 # Read VHDL files
-read_hdl -vhdl {serial_mul.vhd pre_norm_mul.vhd}
+read_hdl -vhdl {fpupack.vhd serial_mul.vhd pre_norm_mul.vhd post_norm_mul.vhd mul_24.vhd}
 
 # Read SystemVerilog files
 read_hdl -sv {multiplier32FP_fsm.sv multiplier32FP.sv}
