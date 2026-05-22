@@ -6,3 +6,4 @@ serial_mul.vhd
 multiplier32FP_fsm.sv
 multiplier32FP.sv
 multiplier32FP_tb.sv
+multiplier32FP_vect_tb.sv

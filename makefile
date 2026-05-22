@@ -132,36 +132,48 @@ else
     GUI_FLAG_VCD = -input $(PROJECT_DIR)/frontend/generate_vcd.tcl
 endif
 
+# --- Testbench Selection ---
+# VECT=1 : Usa o vetor de testes.
+# VECT=0 : Usa o testbench funcional
+VECT ?= 0
+ifeq ($(VECT), 1)
+    TB_MODULE_NAME = $(DESIGNS)_vect_tb
+    TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+else
+    TB_MODULE_NAME = $(DESIGNS)_tb
+    TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+endif
+
 # Xcelium (Frontend generic RTL simulation with filelist)
 RTL_FILELIST = $(PROJECT_DIR)/$(FRONTEND_DIR)/filelist.f
-XRUN_FLAGS = -input ${SCRIPT_DIR}/suppress.tcl -clean -64bit -sv -v200x -v93 -f $(RTL_FILELIST) -top $(DESIGNS)_tb -access +rwc ${GUI_FLAG} #-generic \"somador_tb:HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"somador_tb:WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
+XRUN_FLAGS = -input ${SCRIPT_DIR}/suppress.tcl -clean -64bit -sv -v200x -v93 -f $(RTL_FILELIST) -top $(TB_MODULE_NAME) -access +rwc ${GUI_FLAG}
 
 # Genus (Synthesis flags)
 SYNTH_SCRIPT = ../scripts/synth.tcl
 GENUS_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(SYNTH_SCRIPT)
 
 # Post-Synthesis Monitor flags
-XRUN_POST_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean -input $(PROJECT_DIR)/frontend/monitor.tcl -generic \"somador_tb:HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"somador_tb:WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
+XRUN_POST_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean -input $(PROJECT_DIR)/frontend/monitor.tcl -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
 
 # Top-level and SDF configurations for parameterized gate-level simulations
-TOP_MODULE      = -top $(DESIGNS)_tb
+TOP_MODULE      = -top $(TB_MODULE_NAME)
 SDF_CMD         = -sdf_cmd_file $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 SDF_FILE        = $(BACKEND_DIR)/layout/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).sdf.X
 
 # Tech files & netlists
 TECH_V_LIB      = $(TECH_DIR)/gsclib045_all_v4.4/gsclib045/verilog/slow_vdd1v0_basicCells.v
 NETLIST_FILE    = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).v
-TB_FILES        = $(PROJECT_DIR)/$(FRONTEND_DIR)/Util_package.vhd $(PROJECT_DIR)/$(FRONTEND_DIR)/$(DESIGNS)_tb.vhd
+TB_FILES        = $(PROJECT_DIR)/$(FRONTEND_DIR)/Util_package.vhd $(TB_MAIN_FILE)
 NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).v
 
 # Post-Synthesis VCD Generation flags
-XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"somador_tb:HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"somador_tb:WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
+XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
 
 # Layout and Post-Layout Simulation flags
 LAYOUT_SCRIPT = ${SCRIPT_DIR}/layout.tcl
 POWER_SCRIPT  = ${SCRIPT_DIR}/power.tcl
 INNOVUS_FLAGS = -stylus -no_gui -init $(LAYOUT_SCRIPT) -overwrite -log innovus_$(FREQ_MHZ)MHz_$(LIB_TYPE).log
-XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"somador_tb:HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"somador_tb:WAIT_TIME_NS=>$(WAIT_TIME_NS)\" 
+XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\" 
 
 GENUS_LAYOUT_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(LAYOUT_SCRIPT)
 
@@ -465,6 +477,7 @@ help:
 	@echo "  FREQ_MHZ    : Target frequency in MHz (Default: 100). "
 	@echo "  LIB_TYPE    : Library operating condition (Default: worst). Options: worst, best"
 	@echo "  RUNTIME     : Simulation runtime in ns (Default: 500)"
+	@echo "  VECT        : Set to 1 to use the vector-based testbench (Default: 0)"
 	@echo "  GUI         : Set to 1 to open Xcelium GUI for RTL sim (Default: 0)"
 	@echo "  GUI_VCD     : Set to 1 to open Xcelium GUI for GLS/VCD sim (Default: 0)"
 	@echo ""
