@@ -19,7 +19,7 @@ module multiplier32FP_vect_tb();
     logic        overflow_o;
     logic        underflow_o;
 
-    // File I/O Variables
+    // File Variables
     integer fd_in;
     integer fd_out;
     integer scan_count;
@@ -31,8 +31,8 @@ module multiplier32FP_vect_tb();
     logic [31:0] expected_val;
     integer error_count = 0;
 
-    // Device Under Test (DUT) Instantiation
-    multiplier32FP dut (
+    // DUV
+    multiplier32FP duv (
         .clk(clk),
         .rst_n(rst_n),
         .a_i(a_i),
@@ -110,7 +110,7 @@ module multiplier32FP_vect_tb();
             return 32'h00000000; 
         end
         
-        // 5. Final Packing and Custom Overflow
+        // 5. Final Packing and Overflow
         if (exp_sum >= 255) 
             return 32'h7FFFFFFF; 
             
