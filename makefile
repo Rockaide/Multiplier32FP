@@ -142,6 +142,9 @@ else
     GUI_FLAG_VCD = -input $(PROJECT_DIR)/frontend/generate_vcd.tcl
 endif
 
+# VCD=1 : Força a rodar a síntese mais uma vez
+VCD ?= 0
+
 # --- Testbench Selection ---
 # VECT=1 : Usa o vetor de testes.
 # VECT=0 : Usa o testbench funcional
@@ -197,11 +200,23 @@ all: sim_rtl
 sim_rtl:
 	bash -l -c "module add $(XCELIUM_MOD) && cd $(FRONTEND_DIR) && xrun $(XRUN_FLAGS)"
 
+#synth:
+#	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
+#	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
+#	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"
+
 synth:
 	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"
-
+	@if [ -f "$(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)/$(DESIGNS).v" ] && [ "$(VCD)" != "1" ]; then \
+		echo "==============================================================="; \
+		echo "INFO: Synthesis deliverable already exists. Skipping Genus."; \
+		echo "File: $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)/$(DESIGNS).v"; \
+		echo "==============================================================="; \
+	else \
+		bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"; \
+	fi
+	
 layout_innovus:
 	@mkdir -p $(LAYOUT_DIR)/work
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
