@@ -5,7 +5,7 @@ import csv
 # --- Configuration ---
 design_name = "multiplier32FP"
 # Caminho absoluto pra não bugar
-reports_base_dir = "/home/ufsm00291/ufsm00291-lima202020189/projetos/multiplier32FP/multiplier32FP/backend/synthesis/reports"
+reports_base_dir = "../backend/synthesis/reports"
 output_csv = "CSVs/TL_results.csv"
 
 # Regexes
