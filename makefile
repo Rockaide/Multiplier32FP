@@ -10,23 +10,33 @@ export RUNTIME ?= 500
 # Use 'strip' to protect against invisible trailing spaces breaking the ifeq
 CLEAN_FREQ = $(strip $(FREQ_MHZ))
 
-ifeq ($(CLEAN_FREQ), 100)
-    HALF_PERIOD_PS = 5000
-    WAIT_TIME_NS = 5000
-    PERIOD_CLK = 10.0
-else ifeq ($(CLEAN_FREQ), 500)
-    HALF_PERIOD_PS = 1000
-    WAIT_TIME_NS = 100
-    PERIOD_CLK = 2.0
-else ifeq ($(CLEAN_FREQ), 1000)
-    HALF_PERIOD_PS = 500
-    WAIT_TIME_NS = 50
-    PERIOD_CLK = 1.0
-else
-    HALF_PERIOD_PS = 50000
-    WAIT_TIME_NS = 5000
-    PERIOD_CLK = 100.0
-endif
+
+#ifeq ($(CLEAN_FREQ), 100)
+#    HALF_PERIOD_PS = 5000
+#    WAIT_TIME_NS = 5000
+#    PERIOD_CLK = 10.0
+#else ifeq ($(CLEAN_FREQ), 500)
+#    HALF_PERIOD_PS = 1000
+#    WAIT_TIME_NS = 100
+#    PERIOD_CLK = 2.0
+#else ifeq ($(CLEAN_FREQ), 1000)
+#    HALF_PERIOD_PS = 500
+#    WAIT_TIME_NS = 50
+#    PERIOD_CLK = 1.0
+#else
+#    HALF_PERIOD_PS = 50000
+#    WAIT_TIME_NS = 5000
+#    PERIOD_CLK = 100.0
+#endif
+
+# --- Translate Frequency to Clock Half-Period and Wait Time Dynamically ---
+CLEAN_FREQ = $(strip $(FREQ_MHZ))
+
+PERIOD_CLK := $(shell awk "BEGIN {printf \"%.3f\", 1000.0 / $(CLEAN_FREQ)}")
+HALF_PERIOD_PS := $(shell awk "BEGIN {printf \"%d\", 1000000.0 / (2 * $(CLEAN_FREQ))}")
+
+# Set wait times scaling with the frequency (assuming WAIT_TIME is 1/2 of Period in ns as a base, multiplied by scaling factor)
+WAIT_TIME_NS := $(shell awk "BEGIN {printf \"%d\", 500000.0 / $(CLEAN_FREQ)}")
 
 # Export the calculated period so variables.tcl and SDC files can read it
 export period_clk = $(PERIOD_CLK)
@@ -388,7 +398,7 @@ sweep_short_power_analysis:
 		done \
 	done
     
-nnovus_power:
+innovus_power:
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz.log"
 
@@ -437,9 +447,47 @@ sweep_full_power_analysis:
 			done \
 		done \
 	done
+
+# =========================================================================
+# Maximum Frequency Finder Sweep
+# =========================================================================
+export START_FREQ ?= 100
+export FREQ_STEP ?= 1
+
+find_max_freq:
+	@echo "==============================================================="
+	@echo "Starting frequency sweep to find maximum operational frequency."
+	@echo "==============================================================="
+	@freq=$(START_FREQ); \
+	step=$(FREQ_STEP); \
+	while true; do \
+		echo "Testing FREQ_MHZ=$$freq MHz..."; \
+		$(MAKE) synth FREQ_MHZ=$$freq; \
+		rpt_file="$(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$${freq}_$(RUNTIME)/$(DESIGNS)_timing.rpt"; \
+		if [ ! -f "$$rpt_file" ]; then \
+			echo "Error: Timing report not found ($$rpt_file). Did synthesis fail?"; \
+			break; \
+		fi; \
+		slack=$$(grep -i -E "^\s*Slack:=" "$$rpt_file" | head -n 1 | awk -F'[:=]+' '{print $$2}' | tr -d '[:space:]'); \
+		if [ -z "$$slack" ]; then \
+			echo "Error: Could not extract slack from report."; \
+			break; \
+		fi; \
+		echo "Result: $$freq MHz -> Slack: $$slack ps"; \
+		if echo "$$slack" | grep -q "^-50"; then \
+			echo "==============================================================="; \
+			echo "Negative slack reached at $$freq MHz."; \
+			prev_freq=$$((freq - step)); \
+			echo "Max positive slack frequency is approximately $$prev_freq MHz."; \
+			echo "==============================================================="; \
+			break; \
+		fi; \
+		freq=$$((freq + step)); \
+	done
 # =========================================================================
 # Utilities & Visualizers
 # =========================================================================
+
 
 latex:
 	@echo "================================================================"
