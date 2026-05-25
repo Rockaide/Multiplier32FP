@@ -6,29 +6,6 @@ export FREQ_MHZ ?= 100
 export LIB_TYPE ?= worst
 export RUNTIME ?= 0
 
-# --- Translate Frequency to Clock Half-Period and Wait Time ---
-# Use 'strip' to protect against invisible trailing spaces breaking the ifeq
-CLEAN_FREQ = $(strip $(FREQ_MHZ))
-
-
-#ifeq ($(CLEAN_FREQ), 100)
-#    HALF_PERIOD_PS = 5000
-#    WAIT_TIME_NS = 5000
-#    PERIOD_CLK = 10.0
-#else ifeq ($(CLEAN_FREQ), 500)
-#    HALF_PERIOD_PS = 1000
-#    WAIT_TIME_NS = 100
-#    PERIOD_CLK = 2.0
-#else ifeq ($(CLEAN_FREQ), 1000)
-#    HALF_PERIOD_PS = 500
-#    WAIT_TIME_NS = 50
-#    PERIOD_CLK = 1.0
-#else
-#    HALF_PERIOD_PS = 50000
-#    WAIT_TIME_NS = 5000
-#    PERIOD_CLK = 100.0
-#endif
-
 # --- Translate Frequency to Clock Half-Period and Wait Time Dynamically ---
 CLEAN_FREQ = $(strip $(FREQ_MHZ))
 
@@ -37,6 +14,10 @@ HALF_PERIOD_PS := $(shell awk "BEGIN {printf \"%d\", 1000000.0 / (2 * $(CLEAN_FR
 
 # Set wait times scaling with the frequency (assuming WAIT_TIME is 1/2 of Period in ns as a base, multiplied by scaling factor)
 WAIT_TIME_NS := $(shell awk "BEGIN {printf \"%d\", 500000.0 / $(CLEAN_FREQ)}")
+
+# Calculate exact runtime required for VCD generation based on frequency (1604500 base + 101ns buffer for rounding)
+CALC_RUNTIME := $(shell awk "BEGIN {printf \"%d\", (1604500.0 / $(CLEAN_FREQ)) + 101}")
+CALC_RUNTIME2 := $(shell awk "BEGIN {printf \"%d\", ((1604500.0 / $(CLEAN_FREQ)) + 101) * 2}")
 
 # Export the calculated period so variables.tcl and SDC files can read it
 export period_clk = $(PERIOD_CLK)
@@ -120,7 +101,7 @@ IMC_MOD = cdn/vmanager/vmanager239
 #===================================================================================================
 # UVM & Verification Directories
 VERIF_DIR = verification
-VHD_PATHS = $(FRONTEND_DIR)/Util_package.vhd $(FRONTEND_DIR)/$(DESIGNS).vhd
+VHD_PATHS = $(FRONTEND_DIR)/$(DESIGNS).vhd
 UVM_FILELIST = $(VERIF_DIR)/filelist.f
 
 # UVM specific Xcelium flags
@@ -130,16 +111,16 @@ XRUN_UVM_FLAGS = -clean -64bit -sv -v200x -v93 -uvm -sv $(VHD_PATHS) -f $(UVM_FI
 # GUI Control
 GUI ?= 0
 ifeq ($(GUI), 1)
-    GUI_FLAG = -gui
+	GUI_FLAG = -gui
 else
-    GUI_FLAG = -exit
+	GUI_FLAG =
 endif
 
 GUI_VCD ?= 0
 ifeq ($(GUI_VCD), 1)
-    GUI_FLAG_VCD = -gui
+	GUI_FLAG_VCD = -gui
 else
-    GUI_FLAG_VCD = -input $(PROJECT_DIR)/frontend/generate_vcd.tcl
+	GUI_FLAG_VCD = -input $(PROJECT_DIR)/frontend/generate_vcd.tcl
 endif
 
 # --- Testbench Selection ---
@@ -147,44 +128,45 @@ endif
 # VECT=0 : Usa o testbench funcional
 VECT ?= 0
 ifeq ($(VECT), 1)
-    TB_MODULE_NAME = $(DESIGNS)_vect_tb
-    TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+	TB_MODULE_NAME = $(DESIGNS)_vect_tb
+	TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
 else
-    TB_MODULE_NAME = $(DESIGNS)_tb
-    TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+	TB_MODULE_NAME = $(DESIGNS)_tb
+	TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
 endif
 
 # Xcelium (Frontend generic RTL simulation with filelist)
 RTL_FILELIST = $(PROJECT_DIR)/$(FRONTEND_DIR)/filelist.f
-XRUN_FLAGS = -input ${SCRIPT_DIR}/suppress.tcl -clean -64bit -sv -v200x -v93 -f $(RTL_FILELIST) -top $(TB_MODULE_NAME) -access +rwc ${GUI_FLAG}
 
+# Example of the corrected parameter syntax:
+XRUN_FLAGS = -clean -64bit -sv -v200x -v93 -f $(RTL_FILELIST) -top $(TB_MODULE_NAME) -access +rwc ${GUI_FLAG} -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS)
 # Genus (Synthesis flags)
 SYNTH_SCRIPT = ../scripts/synth.tcl
 GENUS_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(SYNTH_SCRIPT)
 
 # Post-Synthesis Monitor flags
-XRUN_POST_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean -input $(PROJECT_DIR)/frontend/monitor.tcl -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
+XRUN_POST_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean -input $(PROJECT_DIR)/frontend/monitor.tcl -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 
 # Top-level and SDF configurations for parameterized gate-level simulations
-TOP_MODULE      = -top $(TB_MODULE_NAME)
-SDF_CMD         = -sdf_cmd_file $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-SDF_FILE        = $(BACKEND_DIR)/layout/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).sdf.X
+TOP_MODULE	  = -top $(TB_MODULE_NAME)
+SDF_CMD		 = -sdf_cmd_file $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
+SDF_FILE		= $(BACKEND_DIR)/layout/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).sdf.X
+SDF_FILE_SYNTH  = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).sdf
 
 # Tech files & netlists
-TECH_V_LIB      = $(TECH_DIR)/gsclib045_all_v4.4/gsclib045/verilog/slow_vdd1v0_basicCells.v
-NETLIST_FILE    = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).v
-TB_FILES        = $(PROJECT_DIR)/$(FRONTEND_DIR)/Util_package.vhd $(TB_MAIN_FILE)
-NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).v
+TECH_V_LIB	  = $(TECH_DIR)/gsclib045_all_v4.4/gsclib045/verilog/slow_vdd1v0_basicCells.v
+NETLIST_FILE	= $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v
+TB_FILES		= $(TB_MAIN_FILE)
+NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v
 
 # Post-Synthesis VCD Generation flags
-XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\"
+XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc ${GUI_FLAG_VCD} -clean -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 
 # Layout and Post-Layout Simulation flags
 LAYOUT_SCRIPT = ${SCRIPT_DIR}/layout.tcl
 POWER_SCRIPT  = ${SCRIPT_DIR}/power.tcl
 INNOVUS_FLAGS = -stylus -no_gui -init $(LAYOUT_SCRIPT) -overwrite -log innovus_$(FREQ_MHZ)MHz_$(LIB_TYPE).log
-XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -generic \"$(TB_MODULE_NAME):HALF_PERIOD_PS=>$(HALF_PERIOD_PS)\" -generic \"$(TB_MODULE_NAME):WAIT_TIME_NS=>$(WAIT_TIME_NS)\" 
-
+XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 GENUS_LAYOUT_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(LAYOUT_SCRIPT)
 
 # Default target
@@ -196,11 +178,6 @@ all: sim_rtl
 
 sim_rtl:
 	bash -l -c "module add $(XCELIUM_MOD) && cd $(FRONTEND_DIR) && xrun $(XRUN_FLAGS)"
-
-#synth:
-#	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-#	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-#	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"
 
 synth:
 	@MATCHING_DIR=$$(find $(BACKEND_DIR)/synthesis/reports -maxdepth 1 -type d -name "$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)" 2>/dev/null | head -n 1); \
@@ -216,12 +193,19 @@ synth:
 		bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"; \
 	fi
 
+power_synth:
+	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
+	@echo "==============================================================="
+	@echo "Running Fast Power Analysis via Genus DB: $(FREQ_MHZ) MHz | $(RUNTIME)ns"
+	@echo "==============================================================="
+	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_power_$(FREQ_MHZ)MHz_$(RUNTIME) -overwrite -f ../scripts/power_genus.tcl"
+
 layout_innovus:
 	@mkdir -p $(LAYOUT_DIR)/work
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	@mkdir -p $(LAYOUT_DIR)/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus $(INNOVUS_FLAGS)"
-	
+		
 layout_genus:
 	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
@@ -250,7 +234,7 @@ sim_gls_vcd: sim_rtl
 	@mkdir -p $(DUMP_DIR)
 	@mkdir -p $(CSVS_DIR)
 	@echo "Generating dynamic SDF command file..."
-	@echo 'COMPILED_SDF_FILE = "$(SDF_FILE)",' > $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
+	@echo 'COMPILED_SDF_FILE = "$(SDF_FILE_SYNTH)",' > $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'SCOPE = :DUV,' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'LOG_FILE = "sdf.log",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'MTM_CONTROL = "MAXIMUM",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
@@ -288,6 +272,32 @@ sim_post_layout: sim_rtl
 # Parameter Sweeps & Extractions
 # =========================================================================
 
+# Faz a síntese base e gera os VCDs e os power reports para X e 2X
+vcd_synth:
+	@echo "=================================================="
+	@echo "1. Running base synthesis to generate netlist and SDF"
+	@echo "=================================================="
+	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	@echo "=================================================="
+	@echo "2. Running simulation for $(FREQ_MHZ) MHz to generate VCD"
+	@echo "=================================================="
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_gls_vcd FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@echo "=================================================="
+	@echo "3. Running fast power analysis with VCD"
+	@echo "=================================================="
+	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME)
+	@echo "=================================================="
+	@echo "4. Running simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
+	@echo "=================================================="
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_gls_vcd FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
+	@echo "=================================================="
+	@echo "5. Running fast power analysis with VCD and 2X Runtime"
+	@echo "=================================================="
+	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
+
+		
 sweep_synth_csv: sim_rtl
 	@mkdir -p $(CSVS_DIR)
 	@for freq in 10 100 500 1000; do \
@@ -335,16 +345,16 @@ sweep_gls_vcd:
 sweep_full_power_analysis:
 	@mkdir -p $(CSVS_DIR)
 	@echo "========================================================="
-	@echo "          GENERATING BASE SYNTHESIS FILES                "
+	@echo "		  GENERATING BASE SYNTHESIS FILES				"
 	@echo "========================================================="
 	@for freq in 100 500 1000; do \
 		for lib in worst; do \
 			echo "Running base synthesis for $$freq MHz | $$lib"; \
-			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=base; \
+			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=0; \
 		done \
 	done
 	@echo "========================================================="
-	@echo "         STARTING GATE-LEVEL VCD SWEEPS                  "
+	@echo "		 STARTING GATE-LEVEL VCD SWEEPS				  "
 	@echo "========================================================="
 	@for freq in 100 ; do \
 		for lib in worst; do \
@@ -384,10 +394,10 @@ sweep_full_power_analysis:
 	@echo "================================================================"
 	python3 $(SCRIPTS_DIR)/Report_extractor_TL.py
 	python3 $(SCRIPTS_DIR)/latex_table_builder.py
-    
+		
 sweep_short_power_analysis:
 	@echo "========================================================="
-	@echo "         STARTING GATE-LEVEL VCD SWEEPS                  "
+	@echo "		 STARTING GATE-LEVEL VCD SWEEPS				  "
 	@echo "========================================================="
 	@for freq in 100 ; do \
 		for lib in worst; do \
@@ -411,7 +421,7 @@ sweep_short_power_analysis:
 			done \
 		done \
 	done
-    
+		
 innovus_power:
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz.log"
@@ -419,19 +429,19 @@ innovus_power:
 # --- Complete Flow Execution ---
 flow_full_single_config:
 	@echo "========================================================="
-	@echo "          STEP 1: BASE LOGICAL SYNTHESIS (GENUS)         "
+	@echo "		  STEP 1: BASE LOGICAL SYNTHESIS (GENUS)		 "
 	@echo "========================================================="
-	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=base
+	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "========================================================="
-	@echo "          STEP 2: PHYSICAL SYNTHESIS (INNOVUS)           "
+	@echo "		  STEP 2: PHYSICAL SYNTHESIS (INNOVUS)		   "
 	@echo "========================================================="
 	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
 	@echo "========================================================="
-	@echo "          STEP 3: POST-LAYOUT SIMULATION (XCELIUM)       "
+	@echo "		  STEP 3: POST-LAYOUT SIMULATION (XCELIUM)	   "
 	@echo "========================================================="
 	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
 	@echo "========================================================="
-	@echo "          STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
+	@echo "		  STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
 	@echo "========================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
 
@@ -482,7 +492,7 @@ latex:
 	@echo "================================================================"
 	python3 $(SCRIPTS_DIR)/Report_extractor_TL.py
 	python3 $(SCRIPTS_DIR)/latex_table_builder.py
-    
+		
 genus_gui:
 	@echo "==============================================================="
 	@echo "Launching Genus Schematic Viewer: $(FREQ_MHZ) MHz | $(LIB_TYPE)"
@@ -492,10 +502,10 @@ genus_gui:
 innovus_gui:
 	@echo "==============================================================="
 	@echo "Launching Innovus for: $(FREQ_MHZ) MHz | $(LIB_TYPE) library"
-	@echo "Netlist path: ../deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_base/$(DESIGNS).v"
+	@echo "Netlist path: ../deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v"
 	@echo "==============================================================="
 	bash -l -c "module add $(INNOVUS_MOD) && cd $(BACKEND_SYNTH_DIR) && innovus"
-    
+		
 cross_sta:
 	@echo "==============================================================="
 	@echo "Running Static Timing Analysis"
@@ -506,13 +516,13 @@ cross_sta:
 		export TEST_FREQ=$(TEST_FREQ) && \
 		cd $(BACKEND_SYNTH_DIR) && \
 		genus -abort_on_error -log genus_cross_sta -overwrite -f ../scripts/cross_timing.tcl"
-        
+		
 uvm_sim:
 	@echo "=================================================="
 	@echo "Running UVM Mixed-Language Simulation..."
 	@echo "=================================================="
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && xrun $(XRUN_UVM_FLAGS)"
-    
+		
 cov_gui:
 	@echo "=================================================="
 	@echo "Launching Cadence IMC Coverage Viewer..."
@@ -521,9 +531,10 @@ cov_gui:
 
 clean:
 	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log
-	rm -rf $(FRONTEND_DIR)/work 
+	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/multiplier32FP.sdf.X
+	rm -rf $(BACKEND_SYNTH_DIR)/work
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv
-	
+		
 
 
 # =========================================================================
@@ -532,47 +543,47 @@ clean:
 
 help:
 	@echo "========================================================================================="
-	@echo "                                MAKEFILE COMMAND REFERENCE                               "
+	@echo "								MAKEFILE COMMAND REFERENCE							   "
 	@echo "========================================================================================="
 	@echo "Usage: make <target> [VARIABLE=value]"
 	@echo "Example: make sim_gls_vcd FREQ_MHZ=500 LIB_TYPE=worst RUNTIME=200"
 	@echo ""
 	@echo "Key Variables (can be overridden from command line):"
-	@echo "  FREQ_MHZ    : Target frequency in MHz (Default: 100). "
-	@echo "  LIB_TYPE    : Library operating condition (Default: worst). Options: worst, best"
-	@echo "  RUNTIME     : Simulation runtime in ns (Default: 500)"
-	@echo "  VECT        : Set to 1 to use the vector-based testbench (Default: 0)"
-	@echo "  GUI         : Set to 1 to open Xcelium GUI for RTL sim (Default: 0)"
-	@echo "  GUI_VCD     : Set to 1 to open Xcelium GUI for GLS/VCD sim (Default: 0)"
+	@echo "  FREQ_MHZ	: Target frequency in MHz (Default: 100). "
+	@echo "  LIB_TYPE	: Library operating condition (Default: worst). Options: worst, best"
+	@echo "  RUNTIME	 : Simulation runtime in ns (Default: 500)"
+	@echo "  VECT		: Set to 1 to use the vector-based testbench (Default: 0)"
+	@echo "  GUI		 : Set to 1 to open Xcelium GUI for RTL sim (Default: 0)"
+	@echo "  GUI_VCD	 : Set to 1 to open Xcelium GUI for GLS/VCD sim (Default: 0)"
 	@echo ""
 	@echo "Core Execution Targets:"
 	@echo "  flow_full_single_config : Execute the complete flow (synth -> layout -> sim -> power)."
-	@echo "  sim_rtl              	 : Run standard frontend RTL simulation in Xcelium."
-	@echo "  synth                 	 : Run logic synthesis using Genus."
-	@echo "  layout_innovus        	 : Run physical design layout using Innovus."
-	@echo "  layout_genus          	 : Run layout scripts via Genus."
-	@echo "  innovus_power        	 : Run post-layout power analysis using Innovus and VCD."
+	@echo "  sim_rtl				 : Run standard frontend RTL simulation in Xcelium."
+	@echo "  synth				   : Run logic synthesis using Genus."
+	@echo "  layout_innovus		  : Run physical design layout using Innovus."
+	@echo "  layout_genus			: Run layout scripts via Genus."
+	@echo "  innovus_power		   : Run post-layout power analysis using Innovus and VCD."
 	@echo "" 
 	@echo "Gate-Level Simulation (GLS) Targets:"
-	@echo "  sim_gls_monitor      : Post-synthesis simulation using a monitor script."
-	@echo "  sim_gls_vcd          : Post-synthesis simulation with VCD generation."
-	@echo "  sim_post_layout      : Post-layout simulation using Innovus SDF."
+	@echo "  sim_gls_monitor	  : Post-synthesis simulation using a monitor script."
+	@echo "  sim_gls_vcd		  : Post-synthesis simulation with VCD generation."
+	@echo "  sim_post_layout	  : Post-layout simulation using Innovus SDF."
 	@echo ""
 	@echo "Parameter Sweeps & Batch Analysis:"
-	@echo "  sweep_synth_csv      : Sweep synthesis across frequencies/libs and extract to CSV."
-	@echo "  sweep_gls_monitor    : Sweep post-synth monitor simulations across frequencies."
-	@echo "  sweep_gls_vcd        : Sweep post-synth VCD simulations for specific runtimes."
-	@echo "  sweep_full_power     : Full multi-frequency base generation and analysis sweep."
+	@echo "  sweep_synth_csv	  : Sweep synthesis across frequencies/libs and extract to CSV."
+	@echo "  sweep_gls_monitor	: Sweep post-synth monitor simulations across frequencies."
+	@echo "  sweep_gls_vcd		: Sweep post-synth VCD simulations for specific runtimes."
+	@echo "  sweep_full_power	 : Full multi-frequency base generation and analysis sweep."
 	@echo "  sweep_short_power_analysis : Short gate-level VCD sweep for specific runtimes."
 	@echo ""
 	@echo "Utilities & Visualizers:"
-	@echo "  genus_gui            : Open the Genus Schematic Viewer for the current parameters."
-	@echo "  innovus_gui          : Open the Innovus GUI with the generated netlist."
-	@echo "  cross_sta            : Run Static Timing Analysis (requires SYNTH_FREQ & TEST_FREQ)."
-	@echo "  uvm_sim              : Run UVM mixed-language simulation."
-	@echo "  cov_gui              : Open Cadence IMC Coverage Viewer."
-	@echo "  latex                : Extract synthesis data and build a LaTeX table."
-	@echo "  clean                : Remove simulation logs, history, and temporary folders."
+	@echo "  genus_gui			: Open the Genus Schematic Viewer for the current parameters."
+	@echo "  innovus_gui		  : Open the Innovus GUI with the generated netlist."
+	@echo "  cross_sta			: Run Static Timing Analysis (requires SYNTH_FREQ & TEST_FREQ)."
+	@echo "  uvm_sim			  : Run UVM mixed-language simulation."
+	@echo "  cov_gui			  : Open Cadence IMC Coverage Viewer."
+	@echo "  latex				: Extract synthesis data and build a LaTeX table."
+	@echo "  clean				: Remove simulation logs, history, and temporary folders."
 	@echo "========================================================================================="
 	@echo "Example: make synth FREQ_MHZ=500 LIB_TYPE=best"
 	@echo "========================================================================================="

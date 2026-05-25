@@ -117,7 +117,6 @@ syn_generic ${HDL_NAME}
 syn_map ${HDL_NAME} 
 get_db insts .base_cell.name -u ;# List all cell names used in the current design.
 
-
 #-----------------------------------------------------------------------------
 # Preparing and generating output data (reports, verilog netlist)
 #-----------------------------------------------------------------------------
@@ -168,20 +167,20 @@ if { [file exists $vcd_path] } {
     # Extracting Specific Signal Probabilities and Toggle Rates
     #-----------------------------------------------------------------------------
     # Fetch sum_o[7]
-    set prob_sum [get_db hnet:sum_o[7] .lp_computed_probability]
-    set tr_sum   [get_db hnet:sum_o[7] .lp_computed_toggle_rate]
+    #set prob_sum [get_db hnet:sum_o[7] .lp_computed_probability]
+    #set tr_sum   [get_db hnet:sum_o[7] .lp_computed_toggle_rate]
 
     # Fetch a_i[1]
-    set prob_a   [get_db hnet:a_i[1] .lp_computed_probability]
-    set tr_a     [get_db hnet:a_i[1] .lp_computed_toggle_rate]
+    #set prob_a   [get_db hnet:a_i[1] .lp_computed_probability]
+    #set tr_a     [get_db hnet:a_i[1] .lp_computed_toggle_rate]
 
     # Write out using unique keys matching the Python regex
-    set prob_file [open "${RUN_RPT_DIR}/${HDL_NAME}_probabilities.rpt" w]
-    puts $prob_file "sum_o[7]_prob : $prob_sum"
-    puts $prob_file "sum_o[7]_tr : $tr_sum"
-    puts $prob_file "a_i[1]_prob : $prob_a"
-    puts $prob_file "a_i[1]_tr : $tr_a"
-    close $prob_file
+    #set prob_file [open "${RUN_RPT_DIR}/${HDL_NAME}_probabilities.rpt" w]
+    #puts $prob_file "sum_o[7]_prob : $prob_sum"
+    #puts $prob_file "sum_o[7]_tr : $tr_sum"
+    #puts $prob_file "a_i[1]_prob : $prob_a"
+    #puts $prob_file "a_i[1]_tr : $tr_a"
+    #close $prob_file
 
 } else {
     puts "==============================================================="
@@ -189,165 +188,15 @@ if { [file exists $vcd_path] } {
     puts "==============================================================="
 }
 
-quit
+#-----------------------------------------------------------------------------
+# Save Database for Subsequent Power Analysis
+#-----------------------------------------------------------------------------
+set db_path "${RUN_DEV_DIR}/${HDL_NAME}_mapped.db"
+puts "==============================================================="
+puts "Saving Genus Database to: $db_path"
+puts "==============================================================="
+write_db -all_root $db_path
 
 quit
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if {0} {
-
-
-#01 
-report_power -unit uW
-
-@genus:design:somador 94> get_db hnet:a_i[0] .lp_computed_probability
-0.50000
-@genus:design:somador 95> get_db hnet:a_i[0] .lp_computed_toggle_rate
-0.002
-@genus:design:somador 96> get_db hnet:a_i[0] .lp_probability_type
-default
-@genus:design:somador 97> get_db hnet:a_i[0] .lp_toggle_rate_type
-default
-@genus:design:somador 103> set_db hnet:a_i[0] .lp_asserted_probability 0.5
-  Setting attribute of hnet 'a_i[0]': 'lp_asserted_probability' = 0.50000
-1 0.50000
-@genus:design:somador 104> set_db hnet:a_i[0] .lp_asserted_toggle_rate 0.002  
-  Setting attribute of hnet 'a_i[0]': 'lp_asserted_toggle_rate' = 0.002
-1 0.002
-
-
-
-#02 mudei manualmente o lp_asserted_toggle_rate de 0.002 para 0.02 (aumento de 10 vezes)
-@genus:design:somador 110> set_db hnet:a_i[0] .lp_asserted_toggle_rate 0.02 
-  Setting attribute of hnet 'a_i[0]': 'lp_asserted_toggle_rate' = 0.02
-1 0.02
-report_power -unit uW
-
-#03 diminui de 100 ns para 10 ns o período do clock, depois voltei a 100 ns
-@genus:design:somador 92> dc::create_clock -name clk -period 10 [dc::get_ports clk]                                                                                        
-Warning : Replacing existing clock definition. [TIM-101]
-        : The clock name is 'clk'
-report_power -unit uW
-
-
-#04 ler o vcd e relatório de potência
-read_vcd ${PROJECT_DIR}/frontend/${DESIGNS}_5kns.vcd
-report_power -unit uW
-
-get_db hnet:a_i[0] .lp_computed_probability
-0.79000
-get_db hnet:a_i[0] .lp_computed_toggle_rate
-0.0022
-get_db hnet:a_i[0] .lp_probability_type
-asserted
-get_db hnet:a_i[0] .lp_toggle_rate_type
-asserted
-
-
-#05 ler o vcd e relatório de potência
-read_vcd ${PROJECT_DIR}/frontend/${DESIGNS}_10kns.vcd
-report_power -unit uW
-get_db hnet:a_i[0] .lp_computed_probability
-get_db hnet:a_i[0] .lp_computed_toggle_rate
-
-@genus:design:somador 106> get_db hnet:a_i[0] .lp_computed_probability
-0.39500
-@genus:design:somador 107> get_db hnet:a_i[0] .lp_computed_toggle_rate
-0.0011
-@genus:design:somador 108> 
-
-
-
-
-
-
-Better the annotation, better is the accuracy of the estimated power.
-
-You can report the list of instances with activity either unasserted or computed by using the following command:
-
-report_sdb_annotation -stims /stim#1 -show_details seq:unasserted
-report_sdb_annotation -stims /stim#1 -show_details seq:computed
-report_sdb_annotation -stims /stim#1 -show_details icgc:all
-
-
-
-
-read_stimulus -allow_n_nets ${PROJECT_DIR}/frontend/${DESIGNS}_5kns.vcd
-
-
-report_area
-get_db [vfind / -libcell NAND2X1] .area
-report_area -normalize_with_gate NAND2X1
-report_area -detail 
-report_gates
-
-
-
-report_units
-get_db timing_report_time_unit
-set_db timing_report_load_unit pf
-
-
-
-To write out a design session (database or db), use the following:
-
-write_db -script my.db.tcl -to_file my.db
-
-Writing out the db with the -script option lets you modify paths to the libraries, which is useful if there is a need to send a testcase to Cadence.
-
-To read this db in another Genus session, use the following:
-
-genus -f my.db.tcl -post "read_db my.db"
-
-
-
-
-
-# Comandos abril 2025
-
-#Use report_stim_hierarchy command to check design hierarchy
-report_design_hierarchy
-#Use report_stim_hierarchy command to check stimulus hierarchy
-report_stim_hierarchy -file ${PROJECT_DIR}/frontend/${DESIGNS}_5kns.vcd -format vcd
-
-
-report_sdb_annotation -show_details unasserted
-
-
-}
-
-
-
+quit

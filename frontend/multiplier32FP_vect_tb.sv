@@ -1,6 +1,11 @@
 `timescale 1ns / 1ps
 
-module multiplier32FP_vect_tb();
+module multiplier32FP_vect_tb #(
+    // Parameters passed from the Makefile via xrun -defparam
+    parameter integer HALF_PERIOD_PS = 5000, 
+    parameter integer WAIT_TIME_NS   = 5,
+    parameter integer SIM_RUNTIME    = 0
+)();
 
     // System Signals
     logic        clk;
@@ -30,9 +35,12 @@ module multiplier32FP_vect_tb();
     // Variables for verification
     logic [31:0] expected_val;
     integer error_count = 0;
+    
+    // Clock scaling variable
+    real half_period_ns;
 
     // DUV
-    multiplier32FP duv (
+    multiplier32FP DUV (
         .clk(clk),
         .rst_n(rst_n),
         .a_i(a_i),
@@ -117,11 +125,11 @@ module multiplier32FP_vect_tb();
         return {sign_out, exp_sum[7:0], frac_out};
     endfunction
 
-    // Clock Generation: 40 ns period (25 MHz f = 25 MHz)
-    // Initialized at 0 to align the posedge correctly with the 15ns start signal
+    // Clock Generation dynamically scaled by Makefile frequency
     initial begin
+        half_period_ns = HALF_PERIOD_PS / 1000.0;
         clk = 1'b0;
-        forever #20 clk = ~clk; 
+        forever #(half_period_ns) clk = ~clk; 
     end
 
     // Main Test Stimulus
@@ -132,6 +140,9 @@ module multiplier32FP_vect_tb();
         b_i        = 32'h00000000;
         start_i    = 1'b0;
         test_count = 0;
+
+        // Wait for half_period_ns assignment to process
+        #1;
 
         // Open input stimulus file
         fd_in = $fopen("vetor.txt", "r");
@@ -149,14 +160,15 @@ module multiplier32FP_vect_tb();
 
         $display("========================================");
         $display("    Starting Vector-Based Simulation    ");
+        $display("    Freq: %0d MHz (Half-Period: %0.3f ns) ", (1000.0 / (half_period_ns * 2)), half_period_ns);
         $display("========================================");
 
-        // 2. Reset Sequence
-        #5  rst_n = 1'b0;
-        #5  rst_n = 1'b1; 
+        // 2. Reset Sequence (scaled)
+        #(half_period_ns) rst_n = 1'b0;
+        #(half_period_ns) rst_n = 1'b1; 
 
         // 3. First execution timing alignment
-        #5; // Current time is exactly 15ns
+        #(half_period_ns); 
         
         // 4. File processing loop
         while (!$feof(fd_in)) begin
@@ -192,19 +204,33 @@ module multiplier32FP_vect_tb();
             end
         end
 
+        // Extra clock cycles to ensure final write completes
+        repeat(5) @(posedge clk);
+
         $display("========================================");
-        $display("          Simulation Complete           ");
+        $display("          Vectors Processed             ");
         $display(" Processed: %0d vectors.", test_count);
         $display(" Errors:    %0d", error_count);
-        $display(" Total Time: %0t ns", $time);
-        $display(" Simulação 2X vai ser: %0t ns", ($time*2));
-        $display("========================================");
+        $display(" Vector End Time: %0t ns", $realtime);
+        $display(" -------------------------------------- ");
+        $display(" -> Base RUNTIME needed: %0d", $ceil($realtime + 100));
         
+        // --- NEW IDLE WAITING LOGIC ---
+        if (SIM_RUNTIME > 0 && $realtime < SIM_RUNTIME) begin
+            $display(" Padding simulation with idle clock cycles...");
+            $display(" Waiting until requested SIM_RUNTIME of %0d ns...", SIM_RUNTIME);
+            #(SIM_RUNTIME - $realtime);
+        end else begin
+            repeat(5) @(posedge clk);
+        end
+        
+        $display("========================================");
+        $display(" Final Exit Time: %0t ns", $realtime);
+        $display("========================================");
+
         $fclose(fd_in);
         $fclose(fd_out);
         
-        // Uns clocks só para ter certeza que o último resultado já saiu.
-        repeat(5) @(posedge clk);
         $finish;
     end
 
