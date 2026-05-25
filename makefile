@@ -474,7 +474,7 @@ find_max_freq:
 			break; \
 		fi; \
 		echo "Result: $$freq MHz -> Slack: $$slack ps"; \
-		if echo "$$slack" | grep -q "^-50"; then \
+		if echo "$$slack" | grep -q "^-"; then \
 			echo "==============================================================="; \
 			echo "Negative slack reached at $$freq MHz."; \
 			prev_freq=$$((freq - step)); \
