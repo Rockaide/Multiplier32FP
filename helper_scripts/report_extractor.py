@@ -4,7 +4,7 @@ import csv
 
 # --- Configuration ---
 design_name = "multiplier32FP"
-# Caminho absoluto pra não bugar
+# Caminho absoluto pra não bugar ou ../ se tiver executando de dentro do folder
 reports_base_dir = "../backend/synthesis/reports"
 output_csv = "CSVs/TL_results.csv"
 

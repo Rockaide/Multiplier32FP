@@ -4,7 +4,7 @@ SHELL := /bin/bash
 # Define default synthesis parameters
 export FREQ_MHZ ?= 100
 export LIB_TYPE ?= worst
-export RUNTIME ?= 500
+export RUNTIME ?= 0
 
 # --- Translate Frequency to Clock Half-Period and Wait Time ---
 # Use 'strip' to protect against invisible trailing spaces breaking the ifeq
@@ -142,9 +142,6 @@ else
     GUI_FLAG_VCD = -input $(PROJECT_DIR)/frontend/generate_vcd.tcl
 endif
 
-# VCD=1 : Força a rodar a síntese mais uma vez
-VCD ?= 0
-
 # --- Testbench Selection ---
 # VECT=1 : Usa o vetor de testes.
 # VECT=0 : Usa o testbench funcional
@@ -206,17 +203,19 @@ sim_rtl:
 #	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"
 
 synth:
-	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	@if [ -f "$(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)/$(DESIGNS).v" ] && [ "$(VCD)" != "1" ]; then \
+	@MATCHING_DIR=$$(find $(BACKEND_DIR)/synthesis/reports -maxdepth 1 -type d -name "$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)" 2>/dev/null | head -n 1); \
+	if [ -n "$$MATCHING_DIR" ] && [ "$(VCD)" != "1" ]; then \
 		echo "==============================================================="; \
-		echo "INFO: Synthesis deliverable already exists. Skipping Genus."; \
-		echo "File: $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)/$(DESIGNS).v"; \
+		echo "INFO: Synthesis folder for $(FREQ_MHZ) MHz and runtime $(RUNTIME) already exists."; \
+		echo "Found: $$MATCHING_DIR"; \
+		echo "Skipping Genus."; \
 		echo "==============================================================="; \
 	else \
+		mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME); \
+		mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME); \
 		bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"; \
 	fi
-	
+
 layout_innovus:
 	@mkdir -p $(LAYOUT_DIR)/work
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
@@ -435,33 +434,6 @@ flow_full_single_config:
 	@echo "          STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
 	@echo "========================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
-	
-# --- Complete flow genus ---
-sweep_full_power_analysis:
-	@mkdir -p $(CSVS_DIR)
-	@echo "========================================================="
-	@echo "          GENERATING BASE SYNTHESIS FILES                "
-	@echo "========================================================="
-	@for freq in 10; do \
-		for lib in worst; do \
-			echo "Running base synthesis for $$freq MHz | $$lib"; \
-			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=base; \
-		done \
-	done
-	@echo "========================================================="
-	@echo "         STARTING GATE-LEVEL VCD SWEEPS                  "
-	@echo "========================================================="
-	@for freq in 10 ; do \
-		for lib in worst; do \
-			for runtime in 0 500 1000; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
 
 # =========================================================================
 # Maximum Frequency Finder Sweep
@@ -549,7 +521,9 @@ cov_gui:
 
 clean:
 	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log
+	rm -rf $(FRONTEND_DIR)/work 
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv
+	
 
 
 # =========================================================================
