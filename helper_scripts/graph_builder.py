@@ -31,6 +31,28 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
     'savefig.pad_inches': 0.05
 })
+output_area_img = "CSVs/metrics_area.png"
+output_slack_img = "CSVs/metrics_slack.png"
+output_power_img = "CSVs/metrics_power.png"
+
+def apply_custom_style(ax, title, xlabel, ylabel):
+    """Applies clean, modern styling to a matplotlib axis."""
+    # Typography
+    ax.set_title(title, fontsize=14, pad=15, fontweight='bold', color='#333333')
+    ax.set_xlabel(xlabel, fontsize=11, labelpad=10, color='#4B5563')
+    ax.set_ylabel(ylabel, fontsize=11, labelpad=10, color='#4B5563')
+    
+    # Grid
+    ax.grid(True, linestyle='-', alpha=0.3, color='#9CA3AF')
+    
+    # Spines (remove top and right borders)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_color('#D1D5DB')
+    ax.spines['bottom'].set_color('#D1D5DB')
+    
+    # Tick parameters
+    ax.tick_params(axis='both', colors='#4B5563', labelsize=10, width=1, length=4)
 
 def main():
     if not os.path.isfile(csv_file):
@@ -149,6 +171,72 @@ def main():
     ax.set_xlabel('Frequency (MHz)')
     ax.set_ylabel('Total Power (W)')
     fig.savefig(output_power_img)
+    plt.close(fig)
+    print(f"Saved {output_power_img}")
+    # Find the last frequency where slack is >= 0
+    max_freq_zero_slack = None
+    valid_slacks = [(f, s) for f, s in zip(plot_freqs, avg_slacks) if s is not None]
+    
+    # Filter for frequencies with non-negative slack and find the maximum
+    positive_slacks = [f for f, s in valid_slacks if s >= 0]
+    if positive_slacks:
+        max_freq_zero_slack = max(positive_slacks)
+
+    print("Generating separate plots...")
+
+    # ==========================================
+    # 1. Total Area Plot
+    # ==========================================
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(plot_freqs, avg_areas, marker='o', markersize=6, markeredgecolor='white', markeredgewidth=1.2, 
+            color='#2563EB', linewidth=2, linestyle='-')
+            
+    if max_freq_zero_slack is not None:
+        ax.axvline(x=max_freq_zero_slack, color='#DC2626', linestyle='--', linewidth=1.5, 
+                    label=f'Max Op. Freq ({max_freq_zero_slack} MHz)')
+        ax.legend(frameon=True, edgecolor='#E5E7EB', fontsize=10)
+        
+    apply_custom_style(ax, 'Total Area vs. Frequency', 'Frequency (MHz)', 'Total Area (um²)')
+    fig.tight_layout()
+    fig.savefig(output_area_img, dpi=300, bbox_inches='tight')
+    plt.close(fig)
+    print(f"Saved {output_area_img}")
+
+    # ==========================================
+    # 2. Timing Slack Plot
+    # ==========================================
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(plot_freqs, avg_slacks, marker='s', markersize=6, markeredgecolor='white', markeredgewidth=1.2, 
+            color='#059669', linewidth=2, linestyle='-')
+            
+    ax.axhline(0, color='#1F2937', linestyle=':', linewidth=1.5, label='Zero Slack Margin')
+    
+    if max_freq_zero_slack is not None:
+        ax.axvline(x=max_freq_zero_slack, color='#DC2626', linestyle='--', linewidth=1.5, 
+                    label=f'Max Op. Freq ({max_freq_zero_slack} MHz)')
+                    
+    ax.legend(frameon=True, edgecolor='#E5E7EB', fontsize=10)
+    apply_custom_style(ax, 'Timing Slack vs. Frequency', 'Frequency (MHz)', 'Timing Slack (ps)')
+    fig.tight_layout()
+    fig.savefig(output_slack_img, dpi=300, bbox_inches='tight')
+    plt.close(fig)
+    print(f"Saved {output_slack_img}")
+
+    # ==========================================
+    # 3. Total Power Plot
+    # ==========================================
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(plot_freqs, avg_powers, marker='^', markersize=7, markeredgecolor='white', markeredgewidth=1.2, 
+            color='#7C3AED', linewidth=2, linestyle='-')
+            
+    if max_freq_zero_slack is not None:
+        ax.axvline(x=max_freq_zero_slack, color='#DC2626', linestyle='--', linewidth=1.5, 
+                    label=f'Max Op. Freq ({max_freq_zero_slack} MHz)')
+        ax.legend(frameon=True, edgecolor='#E5E7EB', fontsize=10)
+        
+    apply_custom_style(ax, 'Total Power vs. Frequency', 'Frequency (MHz)', 'Total Power (W)')
+    fig.tight_layout()
+    fig.savefig(output_power_img, dpi=300, bbox_inches='tight')
     plt.close(fig)
     print(f"Saved {output_power_img}")
 
