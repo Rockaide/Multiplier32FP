@@ -1,3 +1,5 @@
+# THIS MAKEFILE WAS MADE BY: Vinícius Rocca Ferrari dos Santos Lima
+
 # Define bash as the shell to allow module loading
 SHELL := /bin/bash
 
@@ -471,7 +473,7 @@ find_max_freq:
 			break; \
 		fi; \
 		echo "Result: $$freq MHz -> Slack: $$slack ps"; \
-		if echo "$$slack" | grep -q "^-"; then \
+		if echo "$$slack" | awk '{if ($$1 <= -50) exit 0; else exit 1}'; then \
 			echo "==============================================================="; \
 			echo "Negative slack reached at $$freq MHz."; \
 			prev_freq=$$((freq - step)); \
@@ -532,7 +534,7 @@ cov_gui:
 clean:
 	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log
 	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/multiplier32FP.sdf.X
-	rm -rf $(BACKEND_SYNTH_DIR)/work
+	rm -rf $(BACKEND_SYNTH_DIR)/work $(FRONTEND_DIR)/VCDs
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv
 		
 
