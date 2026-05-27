@@ -79,10 +79,16 @@ export NET_ONE = VDD
 export BUFFERS_CTS = CLKBUFX20 CLKBUFX16 CLKBUFX12 CLKBUFX8 CLKBUFX6 CLKBUFX4 CLKBUFX3 CLKBUFX2
 export INVERTERS_CTS = INVX20 CLKINVX20 INVX16 INVX12 INVX8 INVX6 INVX4 INVX3 INVX2 INVX1 INVXL
 
-export LEFT_CORE_PINS = {a_i[0]} {a_i[1]} {a_i[2]} {a_i[3]} {a_i[4]} {a_i[5]} {a_i[6]} {a_i[7]}
-export TOP_CORE_PINS = {b_i[0]} {b_i[1]} {b_i[2]} {b_i[3]} {b_i[4]} {b_i[5]} {b_i[6]} {b_i[7]}
-export RIGHT_CORE_PINS = {sum_o[0]} {sum_o[1]} {sum_o[2]} {sum_o[3]} {sum_o[4]} {sum_o[5]} {sum_o[6]} {sum_o[7]}
-export BOTTOM_CORE_PINS = carry_i carry_o clk rst_n
+#export LEFT_CORE_PINS = {a_i[0]} {a_i[1]} {a_i[2]} {a_i[3]} {a_i[4]} {a_i[5]} {a_i[6]} {a_i[7]}
+#export TOP_CORE_PINS = {b_i[0]} {b_i[1]} {b_i[2]} {b_i[3]} {b_i[4]} {b_i[5]} {b_i[6]} {b_i[7]}
+#export RIGHT_CORE_PINS = {sum_o[0]} {sum_o[1]} {sum_o[2]} {sum_o[3]} {sum_o[4]} {sum_o[5]} {sum_o[6]} {sum_o[7]}
+#export BOTTOM_CORE_PINS = carry_i carry_o clk rst_n
+
+# Pins para o multiplier
+export LEFT_CORE_PINS = {a_i[0]} {a_i[1]} {a_i[2]} {a_i[3]} {a_i[4]} {a_i[5]} {a_i[6]} {a_i[7]} {a_i[8]} {a_i[9]} {a_i[10]} {a_i[11]} {a_i[12]} {a_i[13]} {a_i[14]} {a_i[15]} {a_i[16]} {a_i[17]} {a_i[18]} {a_i[19]} {a_i[20]} {a_i[21]} {a_i[22]} {a_i[23]} {a_i[24]} {a_i[25]} {a_i[26]} {a_i[27]} {a_i[28]} {a_i[29]} {a_i[30]} {a_i[31]}
+export TOP_CORE_PINS = {b_i[0]} {b_i[1]} {b_i[2]} {b_i[3]} {b_i[4]} {b_i[5]} {b_i[6]} {b_i[7]} {b_i[8]} {b_i[9]} {b_i[10]} {b_i[11]} {b_i[12]} {b_i[13]} {b_i[14]} {b_i[15]} {b_i[16]} {b_i[17]} {b_i[18]} {b_i[19]} {b_i[20]} {b_i[21]} {b_i[22]} {b_i[23]} {b_i[24]} {b_i[25]} {b_i[26]} {b_i[27]} {b_i[28]} {b_i[29]} {b_i[30]} {b_i[31]}
+export RIGHT_CORE_PINS = {product_o[0]} {product_o[1]} {product_o[2]} {product_o[3]} {product_o[4]} {product_o[5]} {product_o[6]} {product_o[7]} {product_o[8]} {product_o[9]} {product_o[10]} {product_o[11]} {product_o[12]} {product_o[13]} {product_o[14]} {product_o[15]} {product_o[16]} {product_o[17]} {product_o[18]} {product_o[19]} {product_o[20]} {product_o[21]} {product_o[22]} {product_o[23]} {product_o[24]} {product_o[25]} {product_o[26]} {product_o[27]} {product_o[28]} {product_o[29]} {product_o[30]} {product_o[31]}
+export BOTTOM_CORE_PINS = clk rst_n start_i done_o nan_o infinit_o overflow_o underflow_o
 
 #-----------------------------------------------------------------------------
 # Directories & Modules
@@ -91,8 +97,9 @@ FRONTEND_DIR = frontend
 HDL_TEMP_DIR = $(FRONTEND_DIR)/hdl_temp
 DUMP_DIR = $(FRONTEND_DIR)/simulation
 BACKEND_SYNTH_DIR = backend/synthesis/work
-BACKEND_LAYOUT_DIR = backend/layout/work
+BACKEND_LAYOUT_DIR = $(BACKEND_DIR)/layout
 CSVS_DIR = CSVs
+LAYOUTKRL = backend/layout/scripts/layout.tcl
 
 XCELIUM_MOD = cdn/xcelium/xcelium2509
 GENUS_MOD = cdn/genus/genus211
@@ -165,7 +172,7 @@ NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LI
 XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc ${GUI_FLAG_VCD} -clean -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 
 # Layout and Post-Layout Simulation flags
-LAYOUT_SCRIPT = ${SCRIPT_DIR}/layout.tcl
+LAYOUT_SCRIPT = ${BACKEND_LAYOUT_DIR}/scripts/layout.tcl
 POWER_SCRIPT  = ${SCRIPT_DIR}/power.tcl
 INNOVUS_FLAGS = -stylus -no_gui -init $(LAYOUT_SCRIPT) -overwrite -log innovus_$(FREQ_MHZ)MHz_$(LIB_TYPE).log
 XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
@@ -483,6 +490,49 @@ find_max_freq:
 		fi; \
 		freq=$$((freq + step)); \
 	done
+
+# Variables
+# =========================================================================
+# Layout Maximum Frequency Finder Sweep
+# =========================================================================
+export START_FREQ_LAYOUT ?= 372
+export FREQ_STEP_LAYOUT ?= 1
+
+find_max_freq_layout:
+	@echo "==============================================================="
+	@echo "Starting layout frequency reverse-sweep."
+	@echo "==============================================================="
+	@freq=$(START_FREQ_LAYOUT); \
+	step=$(FREQ_STEP_LAYOUT); \
+	while true; do \
+		if [ $$freq -le 0 ]; then \
+			echo "Reached 0 MHz. Failing out."; \
+			break; \
+		fi; \
+		echo "Testing FREQ_MHZ=$$freq MHz..."; \
+		$(MAKE) synth FREQ_MHZ=$$freq RUNTIME=0; \
+		$(MAKE) layout_innovus FREQ_MHZ=$$freq RUNTIME=0; \
+		setup_rpt="$(BACKEND_DIR)/layout/reports/$(DESIGNS)_$(LIB_TYPE)_$${freq}_0/setup_timing.rpt"; \
+		hold_rpt="$(BACKEND_DIR)/layout/reports/$(DESIGNS)_$(LIB_TYPE)_$${freq}_0/hold_timing.rpt"; \
+		if [ ! -f "$$setup_rpt" ] || [ ! -f "$$hold_rpt" ]; then \
+			echo "Error: Layout timing reports not found. Did Innovus fail?"; \
+			break; \
+		fi; \
+		setup_slack=$$(grep -i -E "^\s*Slack\s*[:=]+" "$$setup_rpt" | head -n 1 | awk -F'[:=]+' '{print $$2}' | tr -d '[:space:]psns'); \
+		hold_slack=$$(grep -i -E "^\s*Slack\s*[:=]+" "$$hold_rpt" | head -n 1 | awk -F'[:=]+' '{print $$2}' | tr -d '[:space:]psns'); \
+		echo "Result: $$freq MHz -> Setup Slack: $$setup_slack | Hold Slack: $$hold_slack"; \
+		if echo "$$setup_slack" | grep -q "^-" || echo "$$hold_slack" | grep -q "^-"; then \
+			echo "Negative slack found. Lowering frequency..."; \
+			freq=$$((freq - step)); \
+		else \
+			echo "==============================================================="; \
+			echo "Max operational layout frequency found: $$freq MHz."; \
+			echo "==============================================================="; \
+			break; \
+		fi; \
+	done
+
+
 # =========================================================================
 # Utilities & Visualizers
 # =========================================================================
@@ -532,12 +582,28 @@ cov_gui:
 	bash -l -c "module add $(IMC_MOD) && module add $(XCELIUM_MOD) && imc -load cov_work/scope/test"
 
 clean:
-	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log
-	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/multiplier32FP.sdf.X
-	rm -rf $(BACKEND_SYNTH_DIR)/work $(FRONTEND_DIR)/VCDs
-	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv
-		
+	@echo "=================================================="
+	@echo "Cleaning temporary logs, simulation data, and history..."
+	@echo "=================================================="
+	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log*
+	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/*.sdf.X
+	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv $(BACKEND_SYNTH_DIR)/rc*
+	rm -rf $(BACKEND_LAYOUT_DIR)/innovus* $(BACKEND_LAYOUT_DIR)/*.log* $(BACKEND_LAYOUT_DIR)/*.cmd*
+	@echo "=================================================="
+	@echo "INFO: Run 'make clean_all' to permanently delete all VCDs, .db files, and reports."
+	@echo "=================================================="
 
+clean_all: clean
+	@echo "=================================================="
+	@echo "Deep cleaning: Removing all VCDs, Reports, CSVs, and Deliverables..."
+	@echo "=================================================="
+	rm -rf $(FRONTEND_DIR)/VCDs
+	rm -rf $(CSVS_DIR)
+	rm -rf $(BACKEND_DIR)/synthesis/reports/*
+	rm -rf $(BACKEND_DIR)/synthesis/deliverables/*
+	rm -rf $(BACKEND_DIR)/layout/reports/*
+	rm -rf $(BACKEND_DIR)/layout/deliverables/*
+	@echo "Project reset complete."
 
 # =========================================================================
 # Help Menu
@@ -545,52 +611,57 @@ clean:
 
 help:
 	@echo "========================================================================================="
-	@echo "								MAKEFILE COMMAND REFERENCE							   "
+	@echo "                             MAKEFILE COMMAND REFERENCE                             "
 	@echo "========================================================================================="
 	@echo "Usage: make <target> [VARIABLE=value]"
-	@echo "Example: make sim_gls_vcd FREQ_MHZ=500 LIB_TYPE=worst RUNTIME=200"
+	@echo "Example: make vcd_synth FREQ_MHZ=500 LIB_TYPE=worst"
 	@echo ""
 	@echo "Key Variables (can be overridden from command line):"
-	@echo "  FREQ_MHZ	: Target frequency in MHz (Default: 100). "
-	@echo "  LIB_TYPE	: Library operating condition (Default: worst). Options: worst, best"
-	@echo "  RUNTIME	 : Simulation runtime in ns (Default: 500)"
-	@echo "  VECT		: Set to 1 to use the vector-based testbench (Default: 0)"
-	@echo "  GUI		 : Set to 1 to open Xcelium GUI for RTL sim (Default: 0)"
-	@echo "  GUI_VCD	 : Set to 1 to open Xcelium GUI for GLS/VCD sim (Default: 0)"
+	@echo "  FREQ_MHZ   : Target frequency in MHz (Default: 100)."
+	@echo "  LIB_TYPE   : Library operating condition (Default: worst). Options: worst, best."
+	@echo "  RUNTIME    : Simulation runtime in ns (Default: dynamically calculated or 0)."
+	@echo "  VECT       : Set to 1 to use the vector-based testbench (Default: 0)."
+	@echo "  GUI        : Set to 1 to open Xcelium GUI for RTL sim (Default: 0)."
+	@echo "  GUI_VCD    : Set to 1 to open Xcelium GUI for GLS/VCD sim (Default: 0)."
+	@echo "  START_FREQ : Starting frequency in MHz for find_max_freq target (Default: 100)."
+	@echo "  FREQ_STEP  : Step size in MHz for find_max_freq target (Default: 1)."
 	@echo ""
 	@echo "Core Execution Targets:"
 	@echo "  flow_full_single_config : Execute the complete flow (synth -> layout -> sim -> power)."
-	@echo "  sim_rtl				 : Run standard frontend RTL simulation in Xcelium."
-	@echo "  synth				   : Run logic synthesis using Genus."
-	@echo "  layout_innovus		  : Run physical design layout using Innovus."
-	@echo "  layout_genus			: Run layout scripts via Genus."
-	@echo "  innovus_power		   : Run post-layout power analysis using Innovus and VCD."
+	@echo "  sim_rtl                 : Run standard frontend RTL simulation in Xcelium."
+	@echo "  synth                   : Run logic synthesis using Genus (generates .db for power analysis)."
+	@echo "  power_synth             : Run fast power analysis using a saved Genus .db and VCD file."
+	@echo "  vcd_synth               : Run base synth, VCD generation (X and 2X runtime), and power analysis."
+	@echo "  layout_innovus          : Run physical design layout using Innovus."
+	@echo "  layout_genus            : Run layout scripts via Genus."
+	@echo "  innovus_power           : Run post-layout power analysis using Innovus and VCD."
 	@echo "" 
 	@echo "Gate-Level Simulation (GLS) Targets:"
-	@echo "  sim_gls_monitor	  : Post-synthesis simulation using a monitor script."
-	@echo "  sim_gls_vcd		  : Post-synthesis simulation with VCD generation."
-	@echo "  sim_post_layout	  : Post-layout simulation using Innovus SDF."
+	@echo "  sim_gls_monitor      : Post-synthesis simulation using a monitor script."
+	@echo "  sim_gls_vcd          : Post-synthesis simulation with VCD generation."
+	@echo "  sim_post_layout      : Post-layout simulation using Innovus SDF."
 	@echo ""
 	@echo "Parameter Sweeps & Batch Analysis:"
-	@echo "  sweep_synth_csv	  : Sweep synthesis across frequencies/libs and extract to CSV."
-	@echo "  sweep_gls_monitor	: Sweep post-synth monitor simulations across frequencies."
-	@echo "  sweep_gls_vcd		: Sweep post-synth VCD simulations for specific runtimes."
-	@echo "  sweep_full_power	 : Full multi-frequency base generation and analysis sweep."
+	@echo "  find_max_freq              : Sweep frequencies iteratively to find the maximum operational frequency."
+	@echo "  sweep_synth_csv            : Sweep synthesis across frequencies/libs and extract to CSV."
+	@echo "  sweep_gls_monitor          : Sweep post-synth monitor simulations across frequencies."
+	@echo "  sweep_gls_vcd              : Sweep post-synth VCD simulations for specific runtimes."
+	@echo "  sweep_full_power           : Full multi-frequency base generation and analysis sweep."
 	@echo "  sweep_short_power_analysis : Short gate-level VCD sweep for specific runtimes."
 	@echo ""
 	@echo "Utilities & Visualizers:"
-	@echo "  genus_gui			: Open the Genus Schematic Viewer for the current parameters."
-	@echo "  innovus_gui		  : Open the Innovus GUI with the generated netlist."
-	@echo "  cross_sta			: Run Static Timing Analysis (requires SYNTH_FREQ & TEST_FREQ)."
-	@echo "  uvm_sim			  : Run UVM mixed-language simulation."
-	@echo "  cov_gui			  : Open Cadence IMC Coverage Viewer."
-	@echo "  latex				: Extract synthesis data and build a LaTeX table."
-	@echo "  clean				: Remove simulation logs, history, and temporary folders."
+	@echo "  setup_dirs         : Initialize the project directory tree."
+	@echo "  genus_gui          : Open the Genus Schematic Viewer for the current parameters."
+	@echo "  innovus_gui        : Open the Innovus GUI with the generated netlist."
+	@echo "  cross_sta          : Run Static Timing Analysis (requires SYNTH_FREQ & TEST_FREQ)."
+	@echo "  uvm_sim            : Run UVM mixed-language simulation."
+	@echo "  cov_gui            : Open Cadence IMC Coverage Viewer."
+	@echo "  latex              : Extract synthesis data and build a LaTeX table."
+	@echo "  clean              : Remove simulator logs, history, and workspace temp files."
+	@echo "  clean_all          : Deep clean. Removes ALL deliverables, reports, .db files, and VCDs."
 	@echo "========================================================================================="
 	@echo "Example: make synth FREQ_MHZ=500 LIB_TYPE=best"
 	@echo "========================================================================================="
-	@echo "RUN THE COMMAND ' make setup_dirs ' TO CREATE THE DIRECTORY TREE"
-
 
 # =========================================================================
 # Workspace Setup
@@ -602,13 +673,16 @@ setup_dirs:
 	@echo "=================================================="
 	@mkdir -p $(HDL_TEMP_DIR)
 	@mkdir -p $(DUMP_DIR)
-	@mkdir -p backend/layout/constraints
-	@mkdir -p backend/layout/deliverables
-	@mkdir -p backend/layout/reports
-	@mkdir -p backend/layout/scripts
-	@mkdir -p backend/layout/work
-	@mkdir -p backend/synthesis/constraints
-	@mkdir -p backend/synthesis/deliverables
-	@mkdir -p backend/synthesis/reports
-	@mkdir -p backend/synthesis/scripts
-	@mkdir -p backend/synthesis/work
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	@mkdir -p $(CSVS_DIR)
+	@mkdir -p $(BACKEND_DIR)/layout/constraints
+	@mkdir -p $(BACKEND_DIR)/layout/deliverables
+	@mkdir -p $(BACKEND_DIR)/layout/reports
+	@mkdir -p $(BACKEND_DIR)/layout/scripts
+	@mkdir -p $(BACKEND_DIR)/layout/work
+	@mkdir -p $(BACKEND_DIR)/synthesis/constraints
+	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables
+	@mkdir -p $(BACKEND_DIR)/synthesis/reports
+	@mkdir -p $(BACKEND_DIR)/synthesis/scripts
+	@mkdir -p $(BACKEND_DIR)/synthesis/work
+	@echo "Directory tree initialized."
