@@ -108,7 +108,8 @@ INNOVUS_MOD_DDI = cdn/ddi/ddi251
 IMC_MOD = cdn/vmanager/vmanager239
 
 #===================================================================================================
-# UVM & Verification Directories
+# UVM & Verification Directories - Currently not useful for the Multiplier32FP project as the files
+# for it (i.e. UVM item, sequencer, driver, monitor...) aren't implemented.
 VERIF_DIR = verification
 VHD_PATHS = $(FRONTEND_DIR)/$(DESIGNS).vhd
 UVM_FILELIST = $(VERIF_DIR)/filelist.f
@@ -173,7 +174,7 @@ XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsor
 
 # Layout and Post-Layout Simulation flags
 LAYOUT_SCRIPT = ${BACKEND_LAYOUT_DIR}/scripts/layout.tcl
-POWER_SCRIPT  = ${SCRIPT_DIR}/power.tcl
+POWER_SCRIPT  = ${BACKEND_LAYOUT_DIR}/scripts/power.tcl
 INNOVUS_FLAGS = -stylus -no_gui -init $(LAYOUT_SCRIPT) -overwrite -log innovus_$(FREQ_MHZ)MHz_$(LIB_TYPE).log
 XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 GENUS_LAYOUT_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(LAYOUT_SCRIPT)
@@ -209,11 +210,22 @@ power_synth:
 	@echo "==============================================================="
 	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_power_$(FREQ_MHZ)MHz_$(RUNTIME) -overwrite -f ../scripts/power_genus.tcl"
 
+
+
 layout_innovus:
-	@mkdir -p $(LAYOUT_DIR)/work
-	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	@mkdir -p $(LAYOUT_DIR)/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus $(INNOVUS_FLAGS)"
+	@MATCHING_DIR=$$(find $(LAYOUT_DIR)/reports -maxdepth 1 -type d -name "$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)" 2>/dev/null | head -n 1); \
+	if [ -n "$$MATCHING_DIR" ]; then \
+		echo "==============================================================="; \
+		echo "INFO: Layout folder for $(FREQ_MHZ) MHz and runtime $(RUNTIME) already exists."; \
+		echo "Found: $$MATCHING_DIR"; \
+		echo "Skipping Innovus Layout."; \
+		echo "==============================================================="; \
+	else \
+		mkdir -p $(LAYOUT_DIR)/work; \
+		mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME); \
+		mkdir -p $(LAYOUT_DIR)/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME); \
+		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus $(INNOVUS_FLAGS)"; \
+	fi
 		
 layout_genus:
 	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
@@ -258,6 +270,7 @@ sim_gls_vcd: sim_rtl
 			$(TOP_MODULE) \
 			$(SDF_CMD)"
 			
+# Simulation for generation of the VCD after physical synthesis
 sim_post_layout: sim_rtl
 	@mkdir -p $(DUMP_DIR)
 	@mkdir -p $(CSVS_DIR)
@@ -306,7 +319,33 @@ vcd_synth:
 	@echo "=================================================="
 	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
 
-		
+# Runs logic synthesis -> physical synthesis -> post layout simulation for VCD (X and 2X) -> generates power reports
+vcd_layout:
+	@echo "=================================================="
+	@echo "1. Running base layout (requires base synth first)"
+	@echo "=================================================="
+	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	@echo "=================================================="
+	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD"
+	@echo "=================================================="
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@echo "=================================================="
+	@echo "3. Running Post-Layout power analysis with VCD"
+	@echo "=================================================="
+	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME)
+	@echo "=================================================="
+	@echo "4. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
+	@echo "=================================================="
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
+	@echo "=================================================="
+	@echo "5. Running Post-Layout power analysis with VCD and 2X Runtime"
+	@echo "=================================================="
+	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
+
+
 sweep_synth_csv: sim_rtl
 	@mkdir -p $(CSVS_DIR)
 	@for freq in 10 100 500 1000; do \
@@ -438,19 +477,20 @@ innovus_power:
 # --- Complete Flow Execution ---
 flow_full_single_config:
 	@echo "========================================================="
-	@echo "		  STEP 1: BASE LOGICAL SYNTHESIS (GENUS)		 "
+	@echo "       STEP 1: BASE LOGICAL SYNTHESIS (GENUS)         "
 	@echo "========================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "========================================================="
-	@echo "		  STEP 2: PHYSICAL SYNTHESIS (INNOVUS)		   "
+	@echo "       STEP 2: BASE PHYSICAL SYNTHESIS (INNOVUS)      "
 	@echo "========================================================="
-	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
+	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "========================================================="
-	@echo "		  STEP 3: POST-LAYOUT SIMULATION (XCELIUM)	   "
+	@echo "       STEP 3: POST-LAYOUT SIMULATION (XCELIUM)       "
 	@echo "========================================================="
-	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME) VECT=1
 	@echo "========================================================="
-	@echo "		  STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
+	@echo "       STEP 4: POST-LAYOUT POWER ANALYSIS (INNOVUS)   "
 	@echo "========================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
 
@@ -589,6 +629,7 @@ clean:
 	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/*.sdf.X
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv $(BACKEND_SYNTH_DIR)/rc*
 	rm -rf $(BACKEND_LAYOUT_DIR)/innovus* $(BACKEND_LAYOUT_DIR)/*.log* $(BACKEND_LAYOUT_DIR)/*.cmd*
+	rm -rf $(BACKEND_LAYOUT_DIR)/work $(FRONTEND_DIR)/VCDs
 	@echo "=================================================="
 	@echo "INFO: Run 'make clean_all' to permanently delete all VCDs, .db files, and reports."
 	@echo "=================================================="
