@@ -98,6 +98,7 @@ HDL_TEMP_DIR = $(FRONTEND_DIR)/hdl_temp
 DUMP_DIR = $(FRONTEND_DIR)/simulation
 BACKEND_SYNTH_DIR = backend/synthesis/work
 BACKEND_LAYOUT_DIR = $(BACKEND_DIR)/layout
+BACKEND_LAYOUT_WORK_DIR = $(BACKEND_DIR)/layout/work
 CSVS_DIR = CSVs
 LAYOUTKRL = backend/layout/scripts/layout.tcl
 
@@ -596,7 +597,7 @@ innovus_gui:
 	@echo "Launching Innovus for: $(FREQ_MHZ) MHz | $(LIB_TYPE) library"
 	@echo "Netlist path: ../deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v"
 	@echo "==============================================================="
-	bash -l -c "module add $(INNOVUS_MOD) && cd $(BACKEND_SYNTH_DIR) && innovus"
+	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd ${BACKEND_LAYOUT_WORK_DIR} && innovus"
 		
 cross_sta:
 	@echo "==============================================================="
