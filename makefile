@@ -594,10 +594,10 @@ genus_gui:
 
 innovus_gui:
 	@echo "==============================================================="
-	@echo "Launching Innovus for: $(FREQ_MHZ) MHz | $(LIB_TYPE) library"
-	@echo "Netlist path: ../deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v"
+	@echo "Launching Innovus GUI for: $(FREQ_MHZ) MHz | $(LIB_TYPE) library"
+	@echo "Script: ../scripts/view_layout.tcl"
 	@echo "==============================================================="
-	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd ${BACKEND_LAYOUT_WORK_DIR} && innovus"
+	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(BACKEND_LAYOUT_WORK_DIR) && innovus -stylus -init ../scripts/view_layout.tcl"
 		
 cross_sta:
 	@echo "==============================================================="
