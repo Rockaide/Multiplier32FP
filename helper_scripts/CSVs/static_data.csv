@@ -1,6 +1,5 @@
 freq MHz (clk),library,cell count,net um2,total um2,gates total um2 equivalent,timing slack ps,Start point,End point
 10,worst,2766,3565.122,12921.558,12594.111,87024,i_post_norm_mul/s_fract_48_i_reg[46]/CK,i_post_norm_mul/s_zeros_reg[0]/D
-50,worst,N/A,N/A,N/A,N/A,N/A,N/A,N/A
 100,worst,2897,3692.405,13132.289,12799.502,556,i_post_norm_mul/s_fract_48_i_reg[45]/CK,i_post_norm_mul/s_zeros_reg[1]/D
 101,worst,2882,3674.862,13099.698,12767.737,772,i_post_norm_mul/s_fract_48_i_reg[45]/CK,i_post_norm_mul/s_zeros_reg[0]/D
 102,worst,2870,3671.631,13085.523,12753.921,522,i_post_norm_mul/s_fract_48_i_reg[45]/CK,i_post_norm_mul/s_zeros_reg[0]/D

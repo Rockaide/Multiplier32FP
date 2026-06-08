@@ -34,7 +34,7 @@ plt.rcParams.update({
 
 def extract_valid_data(x_list, y_list):
     """Filters out None values to prevent Matplotlib plotting errors"""
-    filtered = [(x, y) for x, y in zip(x_list, y_list) if y is not None]
+    filtered = [(x, y) for x, y in zip(x_list, y_list) if (y is not None and x != 10)]
     if not filtered:
         return [], []
     return zip(*filtered)
@@ -142,7 +142,7 @@ def main():
         ax.legend()
         
         # Inset zoom logic (Placed top-left since area data goes up and right)
-        add_inset_zoom(ax, x_val, y_val, [350, 365], 'o', 'tab:blue', max_freq_zero_slack, loc=[0.1, 0.55, 0.35, 0.35])
+        add_inset_zoom(ax, x_val, y_val, [360, 375], 'o', 'tab:blue', max_freq_zero_slack, loc=[0.1, 0.55, 0.35, 0.35])
 
         ax.set_xlabel('Frequency (MHz)')
         ax.set_ylabel('Total Area (um²)')
@@ -191,7 +191,7 @@ def main():
         ax.legend()
         
         # Inset zoom logic (Placed top-left assuming power follows Area trend)
-        add_inset_zoom(ax, x_val, y_val, [350, 365], '^', 'tab:green', max_freq_zero_slack, loc=[0.1, 0.55, 0.35, 0.35])
+        add_inset_zoom(ax, x_val, y_val, [360, 375], '^', 'tab:green', max_freq_zero_slack, loc=[0.1, 0.55, 0.35, 0.35])
 
         ax.set_xlabel('Frequency (MHz)')
         ax.set_ylabel('Total Power (W)')
