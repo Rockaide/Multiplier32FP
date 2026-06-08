@@ -233,25 +233,6 @@ layout_genus:
 	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(BACKEND_LAYOUT_DIR) && genus $(GENUS_LAYOUT_FLAGS)"
 
-sim_gls_monitor: sim_rtl
-	@mkdir -p $(DUMP_DIR)
-	@mkdir -p $(CSVS_DIR)
-	@echo "Generating dynamic SDF command file..."
-	@echo 'COMPILED_SDF_FILE = "$(SDF_FILE)",' > $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'SCOPE = :DUV,' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'LOG_FILE = "sdf.log",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'MTM_CONTROL = "MAXIMUM",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'SCALE_FACTORS = "1.0:1.0:1.0",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'SCALE_TYPE = "FROM_MTM";' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	bash -l -c "module add $(XCELIUM_MOD) && \
-			cd $(FRONTEND_DIR) && \
-			xrun $(XRUN_POST_FLAGS) \
-			$(TECH_V_LIB) \
-			$(NETLIST_FILE) \
-			$(TB_FILES) \
-			$(TOP_MODULE) \
-			$(SDF_CMD)"
-
 sim_gls_vcd: sim_rtl
 	@mkdir -p $(DUMP_DIR)
 	@mkdir -p $(CSVS_DIR)
@@ -301,7 +282,6 @@ vcd_synth:
 	@echo "1. Running base synthesis to generate netlist and SDF"
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
-	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
 	@echo "2. Running simulation for $(FREQ_MHZ) MHz to generate VCD"
 	@echo "=================================================="
@@ -328,7 +308,6 @@ vcd_layout:
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
-	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
 	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD"
 	@echo "=================================================="
@@ -348,131 +327,6 @@ vcd_layout:
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
 
-
-sweep_synth_csv: sim_rtl
-	@mkdir -p $(CSVS_DIR)
-	@for freq in 10 100 500 1000; do \
-		for lib in worst best; do \
-			echo "=================================================="; \
-			echo "Running synthesis for $$freq MHz with $$lib library"; \
-			echo "=================================================="; \
-			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib; \
-		done \
-	done
-	@echo "=================================================="
-	@echo "Extracting synthesis data to CSV..."
-	@echo "=================================================="
-	python3 $(SCRIPTS_DIR)/Report_extractor.py
-
-sweep_gls_monitor:
-	@mkdir -p $(CSVS_DIR)
-	@for freq in 10 100 500 1000; do \
-		for lib in worst best; do \
-			echo "=================================================="; \
-			echo "Running Post-Synth Simulation: $$freq MHz | $$lib"; \
-			echo "=================================================="; \
-			$(MAKE) sim_gls_monitor FREQ_MHZ=$$freq LIB_TYPE=$$lib; \
-		done \
-	done
-	@echo "=================================================="
-	@echo "Extracting stability times to CSV..."
-	@echo "=================================================="
-	python3 $(SCRIPTS_DIR)/stable_extractor.py
-
-sweep_gls_vcd:
-	@mkdir -p $(CSVS_DIR)
-	@for freq in 100 ; do \
-		for lib in worst; do \
-			for runtime in 5000; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-
-sweep_full_power_analysis:
-	@mkdir -p $(CSVS_DIR)
-	@echo "========================================================="
-	@echo "		  GENERATING BASE SYNTHESIS FILES				"
-	@echo "========================================================="
-	@for freq in 100 500 1000; do \
-		for lib in worst; do \
-			echo "Running base synthesis for $$freq MHz | $$lib"; \
-			$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=0; \
-		done \
-	done
-	@echo "========================================================="
-	@echo "		 STARTING GATE-LEVEL VCD SWEEPS				  "
-	@echo "========================================================="
-	@for freq in 100 ; do \
-		for lib in worst; do \
-			for runtime in 0 500 1000; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-	@for freq in 500 ; do \
-		for lib in worst; do \
-			for runtime in 0 100 200; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-	@for freq in 1000 ; do \
-		for lib in worst; do \
-			for runtime in 0 50 100; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-	@echo "================================================================"
-	@echo "Extracting synthesis data to CSV and writting to latex table..."
-	@echo "================================================================"
-	python3 $(SCRIPTS_DIR)/Report_extractor_TL.py
-	python3 $(SCRIPTS_DIR)/latex_table_builder.py
-		
-sweep_short_power_analysis:
-	@echo "========================================================="
-	@echo "		 STARTING GATE-LEVEL VCD SWEEPS				  "
-	@echo "========================================================="
-	@for freq in 100 ; do \
-		for lib in worst; do \
-			for runtime in 500; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-	@for freq in 1000 ; do \
-		for lib in worst; do \
-			for runtime in 50; do \
-				echo "==============================================================="; \
-				echo "Running Post-Synth Simulation: $$freq MHz | $$lib | $$runtime"; \
-				echo "==============================================================="; \
-				$(MAKE) sim_gls_vcd FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-				$(MAKE) synth FREQ_MHZ=$$freq LIB_TYPE=$$lib RUNTIME=$$runtime; \
-			done \
-		done \
-	done
-		
 innovus_power:
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz.log"
@@ -539,7 +393,7 @@ find_max_freq:
 # Layout Maximum Frequency Finder Sweep
 # =========================================================================
 export START_FREQ_LAYOUT ?= 372
-export FREQ_STEP_LAYOUT ?= 1
+export FREQ_STEP_LAYOUT ?= 25
 
 find_max_freq_layout:
 	@echo "==============================================================="
@@ -684,7 +538,6 @@ help:
 	@echo "  vcd_layout              : Run base layout, VCD generation (X and 2X), and physical power analysis."
 	@echo "" 
 	@echo "Gate-Level Simulation (GLS) Targets:"
-	@echo "  sim_gls_monitor         : Post-synthesis simulation using a monitor script."
 	@echo "  sim_gls_vcd             : Post-synthesis simulation with VCD generation."
 	@echo "  sim_post_layout         : Post-layout simulation using Innovus SDF."
 	@echo ""
