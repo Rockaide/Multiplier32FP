@@ -15,7 +15,7 @@ source ../scripts/common/tech.tcl
 set_db [get_db library_domain *$lib_type] .default true
 
 # 2. Define the exact path to the baseline netlist
-set netlist_path "../deliverables/${design}_${lib_type}_${freq}_base/${design}.v"
+set netlist_path "../deliverables/${design}_${lib_type}_${freq}_0/${design}.v"
 
 # 3. Check if file exists, read it, and elaborate
 if {[file exists $netlist_path]} {

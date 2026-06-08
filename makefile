@@ -301,6 +301,7 @@ vcd_synth:
 	@echo "1. Running base synthesis to generate netlist and SDF"
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
 	@echo "2. Running simulation for $(FREQ_MHZ) MHz to generate VCD"
 	@echo "=================================================="
@@ -327,6 +328,7 @@ vcd_layout:
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
 	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD"
 	@echo "=================================================="

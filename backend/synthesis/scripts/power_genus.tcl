@@ -47,22 +47,26 @@ if { [file exists $vcd_path] } {
     report_power -unit uW > ${RUN_RPT_DIR}/${design}_power.rpt
 
     # Extracting Specific Signal Probabilities
-    set prob_sum [get_db hnet:sum_o[7] .lp_computed_probability]
-    set tr_sum   [get_db hnet:sum_o[7] .lp_computed_toggle_rate]
-    set prob_a   [get_db hnet:a_i[1] .lp_computed_probability]
-    set tr_a     [get_db hnet:a_i[1] .lp_computed_toggle_rate]
+    #set prob_sum [get_db hnet:sum_o[7] .lp_computed_probability]
+    #set tr_sum   [get_db hnet:sum_o[7] .lp_computed_toggle_rate]
+    #set prob_a   [get_db hnet:a_i[1] .lp_computed_probability]
+    #set tr_a     [get_db hnet:a_i[1] .lp_computed_toggle_rate]
 
-    set prob_file [open "${RUN_RPT_DIR}/${design}_probabilities.rpt" w]
-    puts $prob_file "sum_o[7]_prob : $prob_sum"
-    puts $prob_file "sum_o[7]_tr : $tr_sum"
-    puts $prob_file "a_i[1]_prob : $prob_a"
-    puts $prob_file "a_i[1]_tr : $tr_a"
-    close $prob_file
+    #set prob_file [open "${RUN_RPT_DIR}/${design}_probabilities.rpt" w]
+    #puts $prob_file "sum_o[7]_prob : $prob_sum"
+    #puts $prob_file "sum_o[7]_tr : $tr_sum"
+    #puts $prob_file "a_i[1]_prob : $prob_a"
+    #puts $prob_file "a_i[1]_tr : $tr_a"
+    #close $prob_file
 
 } else {
-    puts "==============================================================="
-    puts "WARNING: VCD not found at $vcd_path. Skipping Power Analysis."
-    puts "==============================================================="
+    puts "==================================================================="
+    puts "WARNING: VCD not found at $vcd_path. Doing default power analysis."
+    puts "==================================================================="
+
+    set_db power_engine joules
+    report_sdb_annotation > ${RUN_RPT_DIR}/${design}_sdb_annotation.rpt
+    report_power -unit uW > ${RUN_RPT_DIR}/${design}_power.rpt
 }
 
 quit
