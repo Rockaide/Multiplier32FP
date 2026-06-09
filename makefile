@@ -176,6 +176,7 @@ XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsor
 # Layout and Post-Layout Simulation flags
 LAYOUT_SCRIPT = ${BACKEND_LAYOUT_DIR}/scripts/layout.tcl
 POWER_SCRIPT  = ${BACKEND_LAYOUT_DIR}/scripts/power.tcl
+POWER_SCRIPT_RUNTIME0  = ${BACKEND_LAYOUT_DIR}/scripts/power_runtime0.tcl
 INNOVUS_FLAGS = -stylus -no_gui -init $(LAYOUT_SCRIPT) -overwrite -log innovus_$(FREQ_MHZ)MHz_$(LIB_TYPE).log
 XRUN_POST_LAYOUT_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc -clean ${GUI_FLAG_VCD} -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
 GENUS_LAYOUT_FLAGS = -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_$(FREQ_MHZ)MHz_$(LIB_TYPE) -overwrite -f $(LAYOUT_SCRIPT)
@@ -308,29 +309,47 @@ vcd_layout:
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
-	@echo "=================================================="
-	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD"
-	@echo "=================================================="
 	@mkdir -p $(FRONTEND_DIR)/VCDs
-	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@echo "=================================================="
+	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD without Runtime"
+	@echo "=================================================="
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0 VECT=1
 	@echo "=================================================="
 	@echo "3. Running Post-Layout power analysis with VCD"
 	@echo "=================================================="
+	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	@echo "=================================================="
+	@echo "4. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with X Runtime"
+	@echo "=================================================="
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@echo "=================================================="
+	@echo "5. Running Post-Layout power analysis with VCD"
+	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME)
 	@echo "=================================================="
-	@echo "4. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
+	@echo "6. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
 	@echo "=================================================="
-	@mkdir -p $(FRONTEND_DIR)/VCDs
 	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
 	@echo "=================================================="
-	@echo "5. Running Post-Layout power analysis with VCD and 2X Runtime"
+	@echo "7. Running Post-Layout power analysis with VCD and 2X Runtime"
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
 
 innovus_power:
 	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz.log"
-
+	@if [ "$(RUNTIME)" = "0" ]; then \
+		echo "==============================================================="; \
+		echo "INFO: RUNTIME is 0. Running vectorless power analysis."; \
+		echo "Script: power_runtime0.tcl"; \
+		echo "==============================================================="; \
+		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT_RUNTIME0) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_0.log"; \
+	else \
+		echo "==============================================================="; \
+		echo "INFO: RUNTIME is $(RUNTIME). Running VCD-based power analysis."; \
+		echo "Script: power.tcl"; \
+		echo "==============================================================="; \
+		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_$(RUNTIME).log"; \
+	fi
 # --- Complete Flow Execution ---
 flow_full_single_config:
 	@echo "========================================================="
@@ -388,7 +407,6 @@ find_max_freq:
 		freq=$$((freq + step)); \
 	done
 
-# Variables
 # =========================================================================
 # Layout Maximum Frequency Finder Sweep
 # =========================================================================
