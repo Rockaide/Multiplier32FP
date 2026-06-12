@@ -311,27 +311,23 @@ vcd_layout:
 	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@mkdir -p $(FRONTEND_DIR)/VCDs
 	@echo "=================================================="
-	@echo "2. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD without Runtime"
-	@echo "=================================================="
-	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0 VECT=1
-	@echo "=================================================="
-	@echo "3. Running Post-Layout power analysis with VCD"
+	@echo "2. Running Post-Layout power analysis with VCD"
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
-	@echo "4. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with X Runtime"
+	@echo "3. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with X Runtime"
 	@echo "=================================================="
 	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
 	@echo "=================================================="
-	@echo "5. Running Post-Layout power analysis with VCD"
+	@echo "4. Running Post-Layout power analysis with VCD"
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME)
 	@echo "=================================================="
-	@echo "6. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
+	@echo "5. Running Post-Layout simulation for $(FREQ_MHZ) MHz to generate VCD with 2X Runtime"
 	@echo "=================================================="
 	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
 	@echo "=================================================="
-	@echo "7. Running Post-Layout power analysis with VCD and 2X Runtime"
+	@echo "6. Running Post-Layout power analysis with VCD and 2X Runtime"
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
 
