@@ -1,0 +1,24 @@
+Stim Id                   : Asserted attribute
+--------------------------- Annotation Report ---------------------------
+Object Type         Asserted  UnAsserted  Unconnected  Total  Asserted% 
+                                           + Constant                   
+-------------------------------------------------------------------------
+Primary Ports                                                           
+  Inputs                  67           0            0     67    100.00% 
+  Outputs                 37           0            0     37    100.00% 
+  I/O                      0           0            0      0        N/A 
+Sequential Outputs                                                      
+  Memory                   0           0            0      0        N/A 
+  Flop                   759           0            0    759    100.00% 
+  Latch                    0           0            0      0        N/A 
+  Arch ICGC                0           0            0      0        N/A 
+  Inferred ICGC            0           0            0      0        N/A 
+  Total ICGC               0           0            0      0        N/A 
+Drivers                                                                 
+  Driver nets           4675           0            2   4677    100.00% 
+  RTL Driver nets       1668           0            0   1668    100.00% 
+DFT                                                                     
+  Input Ports              0           0            0      0        N/A 
+  Flop Outputs             0           0            0      0        N/A 
+  Memory Outputs           0           0            0      0        N/A 
+-------------------------------------------------------------------------

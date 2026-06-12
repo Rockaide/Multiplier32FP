@@ -280,9 +280,10 @@ sim_post_layout: sim_rtl
 # Faz a síntese base e gera os VCDs e os power reports para X e 2X
 vcd_synth:
 	@echo "=================================================="
-	@echo "1. Running base synthesis to generate netlist and SDF"
+	@echo "1. Running base synthesis to generate netlist and SDF, and running base power analysis"
 	@echo "=================================================="
 	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	$(MAKE) power_synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
 	@echo "=================================================="
 	@echo "2. Running simulation for $(FREQ_MHZ) MHz to generate VCD"
 	@echo "=================================================="

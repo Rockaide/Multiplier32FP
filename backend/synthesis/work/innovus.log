@@ -1,0 +1,257 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v21.19-s058_1, built Thu Apr 4 09:59:17 PDT 2024
+Options:	
+Date:		Sun May 31 10:46:19 2026
+Host:		ecomp (x86_64 w/Linux 4.18.0-553.123.1.el8_10.x86_64) (6cores*24cpus*Intel(R) Xeon(R) CPU E5645 @ 2.40GHz 12288KB)
+OS:		Rocky Linux 8.10 (Green Obsidian)
+
+License:
+		[10:46:19.456105] Configured Lic search path (21.01-s002): 27001@200.132.35.25
+
+		invs	Innovus Implementation System	21.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+Change the soft stacksize limit to 0.2%RAM (143 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+<CMD> getVersion
+[INFO] Loading PVS 23.11 fill procedures
+<CMD> win
+<CMD> zoomBox -0.01800 -0.01900 0.26500 0.12400
+<CMD> zoomBox -0.00600 -0.00100 0.23400 0.12100
+<CMD> zoomBox -0.05900 -0.03100 0.27500 0.13800
+<CMD> zoomBox -0.09200 -0.05000 0.30100 0.14900
+<CMD> zoomBox -0.13000 -0.07200 0.33200 0.16200
+<CMD> zoomBox -0.09100 -0.05300 0.30200 0.14600
+<CMD> zoomBox -0.02900 -0.02400 0.25500 0.12000
+<CMD> zoomBox -0.00500 -0.01300 0.23700 0.11000
+<CMD> zoomBox -0.03000 -0.02500 0.25600 0.12000
+<CMD> zoomBox -0.05900 -0.03900 0.27800 0.13200
+<CMD> gui_select -rect {0.01300 0.11300 0.20600 0.01000}
+<CMD> zoomBox 0.11100 0.06000 0.11000 0.06000
+<CMD> setDrawView fplan
+<CMD> setDrawView place
+<CMD> set init_verilog ../../layout/deliverables/multiplier32FP_worst_372_0/multiplier32FP.v
+<CMD> init_design
+**WARN: (IMPSYT-10026):	No LEF physical data was provided but timing libraries were given, so only timing analysis can be run. Any commands that require physical data will fail. This mode is meant for doing Tempus vs Innovus comparisons using common scripts, and is not intended for normal usage.
+Use timer mode.
+*** End library_loading (cpu=0.00min, real=0.00min, mem=0.0M, fe_cpu=0.83min, fe_real=1.90min, fe_mem=1093.6M) ***
+#% Begin Load netlist data ... (date=05/31 10:48:13, mem=1043.1M)
+*** Begin netlist parsing (mem=1093.6M) ***
+Created 0 new cells from 0 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist '../../layout/deliverables/multiplier32FP_worst_372_0/multiplier32FP.v'
+Module OAI21X2 is not defined and will be treated as an empty module.
+Module INVX1 is not defined and will be treated as an empty module.
+Module INVX3 is not defined and will be treated as an empty module.
+Module INVX2 is not defined and will be treated as an empty module.
+Module BUFX2 is not defined and will be treated as an empty module.
+Module CLKXOR2X1 is not defined and will be treated as an empty module.
+Module NOR3X2 is not defined and will be treated as an empty module.
+Module CLKINVX6 is not defined and will be treated as an empty module.
+Module INVXL is not defined and will be treated as an empty module.
+Module XNOR2X1 is not defined and will be treated as an empty module.
+Module OAI21X4 is not defined and will be treated as an empty module.
+Module NAND2X2 is not defined and will be treated as an empty module.
+Module AOI21X1 is not defined and will be treated as an empty module.
+Module XNOR2X2 is not defined and will be treated as an empty module.
+Module CLKBUFX6 is not defined and will be treated as an empty module.
+Module DFFHQX1 is not defined and will be treated as an empty module.
+Module DFFQXL is not defined and will be treated as an empty module.
+Module DFFX1 is not defined and will be treated as an empty module.
+Module NAND2X1 is not defined and will be treated as an empty module.
+Module NAND3X1 is not defined and will be treated as an empty module.
+Module OAI211X1 is not defined and will be treated as an empty module.
+Module AOI2BB2X1 is not defined and will be treated as an empty module.
+Module AOI22X1 is not defined and will be treated as an empty module.
+Module AND2X1 is not defined and will be treated as an empty module.
+Module MXI2XL is not defined and will be treated as an empty module.
+Module AOI21XL is not defined and will be treated as an empty module.
+Module MX2X1 is not defined and will be treated as an empty module.
+Module AOI21X2 is not defined and will be treated as an empty module.
+Module CLKMX2X2 is not defined and will be treated as an empty module.
+Module NOR2X1 is not defined and will be treated as an empty module.
+Module NOR2BX1 is not defined and will be treated as an empty module.
+Module NOR2XL is not defined and will be treated as an empty module.
+Module OR2X2 is not defined and will be treated as an empty module.
+Module AND2X2 is not defined and will be treated as an empty module.
+Module AND2X6 is not defined and will be treated as an empty module.
+Module AND2XL is not defined and will be treated as an empty module.
+Module DFFHQX8 is not defined and will be treated as an empty module.
+Module EDFFHQX1 is not defined and will be treated as an empty module.
+Module MDFFHQX1 is not defined and will be treated as an empty module.
+Module OA21X1 is not defined and will be treated as an empty module.
+Module OR4X1 is not defined and will be treated as an empty module.
+Module OR4X2 is not defined and will be treated as an empty module.
+Module AND2X4 is not defined and will be treated as an empty module.
+Module OAI2BB1X1 is not defined and will be treated as an empty module.
+Module AND3X4 is not defined and will be treated as an empty module.
+Module CLKAND2X12 is not defined and will be treated as an empty module.
+Module DFFX2 is not defined and will be treated as an empty module.
+Module ADDHX1 is not defined and will be treated as an empty module.
+Module OAI21X1 is not defined and will be treated as an empty module.
+Module OAI31X1 is not defined and will be treated as an empty module.
+Module OAI22X1 is not defined and will be treated as an empty module.
+Module AOI2BB1X1 is not defined and will be treated as an empty module.
+Module OR2X1 is not defined and will be treated as an empty module.
+Module NOR3X1 is not defined and will be treated as an empty module.
+Module AOI32X1 is not defined and will be treated as an empty module.
+Module NAND2BX1 is not defined and will be treated as an empty module.
+Module ADDFX1 is not defined and will be treated as an empty module.
+Module OR3X1 is not defined and will be treated as an empty module.
+Module ADDFHX1 is not defined and will be treated as an empty module.
+Module MXI2X2 is not defined and will be treated as an empty module.
+Module NOR2X2 is not defined and will be treated as an empty module.
+Module NOR2X4 is not defined and will be treated as an empty module.
+Module AOI2BB1X2 is not defined and will be treated as an empty module.
+Module AOI21X4 is not defined and will be treated as an empty module.
+Module CLKBUFX2 is not defined and will be treated as an empty module.
+Module DFFQX2 is not defined and will be treated as an empty module.
+Module AOI31X1 is not defined and will be treated as an empty module.
+Module AO21X1 is not defined and will be treated as an empty module.
+Module AO22X1 is not defined and will be treated as an empty module.
+Module OA22X1 is not defined and will be treated as an empty module.
+Module AND3X2 is not defined and will be treated as an empty module.
+Module NOR4X1 is not defined and will be treated as an empty module.
+Module NOR4X2 is not defined and will be treated as an empty module.
+Module OAI22X2 is not defined and will be treated as an empty module.
+Module AOI211XL is not defined and will be treated as an empty module.
+Module AOI222X1 is not defined and will be treated as an empty module.
+Module AOI211X1 is not defined and will be treated as an empty module.
+Module AOI211X2 is not defined and will be treated as an empty module.
+Module AOI221X1 is not defined and will be treated as an empty module.
+Module AOI31X2 is not defined and will be treated as an empty module.
+Module AND3XL is not defined and will be treated as an empty module.
+Module AOI221X4 is not defined and will be treated as an empty module.
+Module OAI32X1 is not defined and will be treated as an empty module.
+Module NOR3X4 is not defined and will be treated as an empty module.
+Module AOI211X4 is not defined and will be treated as an empty module.
+Module OR3X2 is not defined and will be treated as an empty module.
+Module OR2X4 is not defined and will be treated as an empty module.
+Module AOI221X2 is not defined and will be treated as an empty module.
+Module OAI31X2 is not defined and will be treated as an empty module.
+Module AOI222X2 is not defined and will be treated as an empty module.
+Module OAI221X1 is not defined and will be treated as an empty module.
+Module AND4X1 is not defined and will be treated as an empty module.
+Module NOR3BX2 is not defined and will be treated as an empty module.
+Module NAND2BX2 is not defined and will be treated as an empty module.
+Module DFFX4 is not defined and will be treated as an empty module.
+Module OAI2BB2XL is not defined and will be treated as an empty module.
+Module DFFRHQX1 is not defined and will be treated as an empty module.
+Module NAND3BXL is not defined and will be treated as an empty module.
+Module DFFRX1 is not defined and will be treated as an empty module.
+Module BUFX3 is not defined and will be treated as an empty module.
+Module CLKBUFX12 is not defined and will be treated as an empty module.
+Module CLKBUFX8 is not defined and will be treated as an empty module.
+Module CLKINVX8 is not defined and will be treated as an empty module.
+Module NOR2BX2 is not defined and will be treated as an empty module.
+Module NAND3X2 is not defined and will be treated as an empty module.
+Module NOR3BX1 is not defined and will be treated as an empty module.
+Module AND4X4 is not defined and will be treated as an empty module.
+
+*** Memory Usage v#1 (Current mem = 1099.613M, initial mem = 494.973M) ***
+*** End netlist parsing (cpu=0:00:00.1, real=0:00:00.0, mem=1099.6M) ***
+#% End Load netlist data ... (date=05/31 10:48:13, total cpu=0:00:00.1, real=0:00:00.0, peak res=1052.4M, current mem=1052.4M)
+Top level cell is multiplier32FP.
+Hooked 0 DB cells to tlib cells.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'OAI21X2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX3' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'XNOR2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVXL' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKINVX6' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NOR3X2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKXOR2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'BUFX2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AND2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AOI22X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AOI2BB2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'OAI211X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NAND3X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NAND2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFQXL' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFHQX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKBUFX6' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+**WARN: (EMS-27):	Message (IMPDB-2504) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+107 empty module found.
+Starting recursive module instantiation check.
+No recursion found.
+Term dir updated for 0 vinsts of 107 cells.
+Building hierarchical netlist for Cell multiplier32FP ...
+*** Netlist is unique.
+** info: there are 112 modules.
+** info: there are 0 stdCell insts.
+
+*** Memory Usage v#1 (Current mem = 1152.027M, initial mem = 494.973M) ***
+**WARN: (IMPSYT-7328):	The design has been initialized in physical-only mode because the init_mmmc_file global variable was not defined. Timing analysis will not be possible within this session. You can only use commands that do not depend on timing data. If you need to use timing, you need to restart with an init_mmmc_file to define the timing setup, or you can save this design and use restoreDesign -mmmc_file <viewDef.tcl> to add the timing setup information.
+Extraction setup Started 
+
+*** Summary of all messages that are not suppressed in this session:
+Severity  ID               Count  Summary                                  
+WARNING   IMPSYT-7328          1  The design has been initialized in physi...
+WARNING   IMPSYT-10026         1  No LEF physical data was provided but ti...
+WARNING   IMPDB-2504         107  Unable to find netlist cell in the desig...
+*** Message Summary: 109 warning(s), 0 error(s)
+
+<CMD> zoomBox 0.10400 0.05600 0.11600 0.06200
+<CMD> zoomBox 0.10200 0.05300 0.11900 0.06200
+<CMD> zoomBox 0.09900 0.05200 0.12100 0.06300
+<CMD> zoomBox 0.10000 0.05200 0.11900 0.06200
+<CMD> zoomBox 0.10100 0.05200 0.11600 0.06000
+<CMD> zoomBox 0.10100 0.05300 0.11500 0.06000
+<CMD> zoomBox 0.10200 0.05400 0.11400 0.06000
+<CMD> zoomBox 0.10000 0.05300 0.11600 0.06100
+<CMD> zoomBox 0.09600 0.05100 0.12000 0.06300
+<CMD> zoomBox 0.09400 0.05000 0.12200 0.06400
+<CMD> zoomBox 0.09200 0.04800 0.12500 0.06500
+<CMD> zoomBox 0.08600 0.04400 0.13300 0.06800
+<CMD> zoomBox 0.05800 0.02800 0.16500 0.08200
+<CMD> zoomBox -0.00300 -0.01000 0.23800 0.11200
+<CMD> zoomBox -0.23500 -0.15200 0.52000 0.23100
+<CMD> zoomBox -0.66400 -0.41300 1.04400 0.45300
+<CMD> zoomBox -3.20900 -1.97000 4.17300 1.77200
+<CMD> zoomBox -0.96000 -0.84500 1.82500 0.56700
+<CMD> zoomBox -0.75600 -0.74300 1.61300 0.45800
+<CMD> zoomBox -0.20300 -0.46600 1.03600 0.16200
+<CMD> zoomBox 0.03000 -0.34900 0.79100 0.03700
+
+--------------------------------------------------------------------------------
+Exiting Innovus on Sun May 31 10:48:29 2026
+  Total CPU time:     0:00:55
+  Total real time:    0:02:13
+  Peak memory (main): 1350.89MB
+
+
+*** Memory Usage v#1 (Current mem = 1412.504M, initial mem = 494.973M) ***
+*** Message Summary: 109 warning(s), 0 error(s)
+
+--- Ending "Innovus" (totcpu=0:00:53.3, real=0:02:10, mem=1412.5M) ---

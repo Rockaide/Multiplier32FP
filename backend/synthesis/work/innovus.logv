@@ -1,0 +1,398 @@
+[05/31 10:46:19      0s] 
+[05/31 10:46:19      0s] Cadence Innovus(TM) Implementation System.
+[05/31 10:46:19      0s] Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+[05/31 10:46:19      0s] 
+[05/31 10:46:19      0s] Version:	v21.19-s058_1, built Thu Apr 4 09:59:17 PDT 2024
+[05/31 10:46:19      0s] Options:	
+[05/31 10:46:19      0s] Date:		Sun May 31 10:46:19 2026
+[05/31 10:46:19      0s] Host:		ecomp (x86_64 w/Linux 4.18.0-553.123.1.el8_10.x86_64) (6cores*24cpus*Intel(R) Xeon(R) CPU E5645 @ 2.40GHz 12288KB)
+[05/31 10:46:19      0s] OS:		Rocky Linux 8.10 (Green Obsidian)
+[05/31 10:46:19      0s] 
+[05/31 10:46:19      0s] License:
+[05/31 10:46:19      0s] 		[10:46:19.456105] Configured Lic search path (21.01-s002): 27001@200.132.35.25
+
+[05/31 10:46:19      0s] 		invs	Innovus Implementation System	21.1	checkout succeeded
+[05/31 10:46:19      0s] 		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+[05/31 10:46:46     26s] Reset Parastics called with the command setExtractRCMode -reset@(#)CDS: Innovus v21.19-s058_1 (64bit) 04/04/2024 09:59 (Linux 3.10.0-693.el7.x86_64)
+[05/31 10:46:50     30s] @(#)CDS: NanoRoute 21.19-s058_1 NR231113-0413/21_19-UB (database version 18.20.605) {superthreading v2.17}
+[05/31 10:46:50     30s] @(#)CDS: AAE 21.19-s004 (64bit) 04/04/2024 (Linux 3.10.0-693.el7.x86_64)
+[05/31 10:46:50     30s] @(#)CDS: CTE 21.19-s010_1 () Mar 27 2024 01:55:37 ( )
+[05/31 10:46:50     30s] @(#)CDS: SYNTECH 21.19-s002_1 () Sep  6 2023 22:17:00 ( )
+[05/31 10:46:50     30s] @(#)CDS: CPE v21.19-s026
+[05/31 10:46:50     30s] @(#)CDS: IQuantus/TQuantus 21.1.1-s966 (64bit) Wed Mar 8 10:22:20 PST 2023 (Linux 3.10.0-693.el7.x86_64)
+[05/31 10:46:50     30s] @(#)CDS: OA 22.60-p087 Thu Feb  9 09:35:26 2023
+[05/31 10:46:50     30s] @(#)CDS: SGN 20.10-d001 (01-Jun-2020) (64 bit executable, Qt5.9.0)
+[05/31 10:46:50     30s] @(#)CDS: RCDB 11.15.0
+[05/31 10:46:50     30s] @(#)CDS: STYLUS 21.12-s019_1 (12/20/2022 05:13 PST)
+[05/31 10:46:50     30s] @(#)CDS: SystemPlanner-21.18-10439 (21.18) (2023-03-01 15:40:03+0800)
+[05/31 10:46:50     30s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_2146487_ecomp_filipe.eismann_Gg6faF.
+
+[05/31 10:46:50     30s] Change the soft stacksize limit to 0.2%RAM (143 mbytes). Set global soft_stack_size_limit to change the value.
+[05/31 10:46:54     34s] 
+[05/31 10:46:54     34s] **INFO:  MMMC transition support version v31-84 
+[05/31 10:46:54     34s] 
+[05/31 10:46:54     34s] <CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+[05/31 10:46:54     34s] <CMD> suppressMessage ENCEXT-2799
+[05/31 10:46:54     34s] <CMD> getVersion
+[05/31 10:46:55     34s] [INFO] Loading PVS 23.11 fill procedures
+[05/31 10:46:55     35s] <CMD> win
+[05/31 10:47:02     36s] <CMD> zoomBox -0.01800 -0.01900 0.26500 0.12400
+[05/31 10:47:03     36s] <CMD> zoomBox -0.00600 -0.00100 0.23400 0.12100
+[05/31 10:47:17     38s] <CMD> zoomBox -0.05900 -0.03100 0.27500 0.13800
+[05/31 10:47:17     38s] <CMD> zoomBox -0.09200 -0.05000 0.30100 0.14900
+[05/31 10:47:17     39s] <CMD> zoomBox -0.13000 -0.07200 0.33200 0.16200
+[05/31 10:47:18     39s] <CMD> zoomBox -0.09100 -0.05300 0.30200 0.14600
+[05/31 10:47:18     39s] <CMD> zoomBox -0.02900 -0.02400 0.25500 0.12000
+[05/31 10:47:18     39s] <CMD> zoomBox -0.00500 -0.01300 0.23700 0.11000
+[05/31 10:47:18     39s] <CMD> zoomBox -0.03000 -0.02500 0.25600 0.12000
+[05/31 10:47:19     39s] <CMD> zoomBox -0.05900 -0.03900 0.27800 0.13200
+[05/31 10:47:20     39s] <CMD> gui_select -rect {0.01300 0.11300 0.20600 0.01000}
+[05/31 10:47:20     39s] <CMD> zoomBox 0.11100 0.06000 0.11000 0.06000
+[05/31 10:47:28     41s] <CMD> setDrawView fplan
+[05/31 10:47:29     41s] <CMD> setDrawView place
+[05/31 10:48:13     49s] <CMD> set init_verilog ../../layout/deliverables/multiplier32FP_worst_372_0/multiplier32FP.v
+[05/31 10:48:13     49s] <CMD> init_design
+[05/31 10:48:13     49s] **WARN: (IMPSYT-10026):	No LEF physical data was provided but timing libraries were given, so only timing analysis can be run. Any commands that require physical data will fail. This mode is meant for doing Tempus vs Innovus comparisons using common scripts, and is not intended for normal usage.
+[05/31 10:48:13     49s] Use timer mode.
+[05/31 10:48:13     49s] *** End library_loading (cpu=0.00min, real=0.00min, mem=0.0M, fe_cpu=0.83min, fe_real=1.90min, fe_mem=1093.6M) ***
+[05/31 10:48:13     49s] #% Begin Load netlist data ... (date=05/31 10:48:13, mem=1043.1M)
+[05/31 10:48:13     49s] *** Begin netlist parsing (mem=1093.6M) ***
+[05/31 10:48:13     49s] Created 0 new cells from 0 timing libraries.
+[05/31 10:48:13     49s] Reading netlist ...
+[05/31 10:48:13     49s] Backslashed names will retain backslash and a trailing blank character.
+[05/31 10:48:13     49s] Reading verilog netlist '../../layout/deliverables/multiplier32FP_worst_372_0/multiplier32FP.v'
+[05/31 10:48:13     49s] Module OAI21X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module INVX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module INVX3 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module INVX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module BUFX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKXOR2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR3X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKINVX6 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module INVXL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module XNOR2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI21X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI21X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module XNOR2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKBUFX6 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFHQX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFQXL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND3X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI211X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI2BB2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI22X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module MXI2XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI21XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module MX2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI21X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKMX2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2BX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND2X6 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND2XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFHQX8 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module EDFFHQX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module MDFFHQX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OA21X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR4X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR4X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND2X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI2BB1X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND3X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKAND2X12 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module ADDHX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI21X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI31X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI22X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI2BB1X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR2X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR3X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI32X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND2BX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module ADDFX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR3X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module ADDFHX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module MXI2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI2BB1X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI21X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKBUFX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFQX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI31X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AO21X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AO22X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OA22X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND3X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR4X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR4X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI22X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI211XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI222X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI211X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI211X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI221X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI31X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND3XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI221X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI32X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR3X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI211X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR3X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OR2X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI221X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI31X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AOI222X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI221X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND4X1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR3BX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND2BX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFX4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module OAI2BB2XL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFRHQX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND3BXL is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module DFFRX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module BUFX3 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKBUFX12 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKBUFX8 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module CLKINVX8 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR2BX2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NAND3X2 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module NOR3BX1 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] Module AND4X4 is not defined and will be treated as an empty module.
+[05/31 10:48:13     49s] 
+[05/31 10:48:13     49s] *** Memory Usage v#1 (Current mem = 1099.613M, initial mem = 494.973M) ***
+[05/31 10:48:13     49s] *** End netlist parsing (cpu=0:00:00.1, real=0:00:00.0, mem=1099.6M) ***
+[05/31 10:48:13     49s] #% End Load netlist data ... (date=05/31 10:48:13, total cpu=0:00:00.1, real=0:00:00.0, peak res=1052.4M, current mem=1052.4M)
+[05/31 10:48:13     49s] Top level cell is multiplier32FP.
+[05/31 10:48:13     49s] Hooked 0 DB cells to tlib cells.
+[05/31 10:48:13     49s] Ending "BindLib:" (total cpu=0:00:00.0, real=0:00:00.0, peak res=1053.0M, current mem=1053.0M)
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'OAI21X2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX3' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'XNOR2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVXL' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKINVX6' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NOR3X2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKXOR2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'BUFX2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'INVX2' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AND2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AOI22X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'AOI2BB2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'OAI211X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NAND3X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'NAND2X1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFQXL' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'DFFHQX1' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'CLKBUFX6' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+[05/31 10:48:13     49s] Type 'man IMPDB-2504' for more detail.
+[05/31 10:48:13     49s] **WARN: (EMS-27):	Message (IMPDB-2504) has exceeded the current message display limit of 20.
+[05/31 10:48:13     49s] To increase the message display limit, refer to the product command reference manual.
+[05/31 10:48:13     49s] Cell 'CLKXOR2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKXOR2X1' as output for net 'fract_o[47]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDHX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'S' of cell 'ADDHX1' as output for net 'fract_o[40]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'XNOR2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'XNOR2X1' as output for net 'fract_o[36]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDFX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'S' of cell 'ADDFX1' as output for net 'fract_o[13]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI2BB1X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI2BB1X1' as output for net 'fract_o[12]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'EDFFHQX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'EDFFHQX1' as output for net 'fract_o[11]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'DFFHQX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFHQX1' as output for net 's_fracta_i[22]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'DFFQXL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFQXL' as output for net 's_fracta_i[19]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI21X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI21X4' as output for net 'mult_194_38[1]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AND2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND2X1' as output for net 'mult_194_38[0]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI21X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI21X2' as output for net 'mult_195_46[11]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'MXI2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'MXI2X2' as output for net 'mult_195_46[9]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI21X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI21X2' as output for net 'mult_195_46[1]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI21X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI21X4' as output for net 'mult_196_46[11]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'XNOR2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'XNOR2X2' as output for net 'mult_197_52[10]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'MX2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'MX2X1' as output for net '\sum[sub_208_12] [20]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI2BB1X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI2BB1X2' as output for net '\sum[sub_208_12] [6]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NAND2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND2X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_2' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OA21X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OA21X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_7' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OR2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR2X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_18' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'INVX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'INVX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_30' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_35' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NAND2BX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND2BX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_50' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR2BX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2BX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_51' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI21X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI21X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_68' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI21X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI21X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_71' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI22X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI22X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_75' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR3X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR3X2' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_78' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR2X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2X4' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_92' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDFHX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'S' of cell 'ADDFHX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_111' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDFX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'CO' of cell 'ADDFX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_122' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDFHX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'CO' of cell 'ADDFHX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi893_n_123' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NAND3X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND3X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_26' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI2BB1X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI2BB1X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_28' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'ADDHX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'CO' of cell 'ADDHX1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_31' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OR3X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR3X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_157' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI32X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI32X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_202' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'INVXL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'INVXL' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_203' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR3X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR3X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_208' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI31X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI31X1' as output for net 'WALLACE_CSA_DUMMY_OP_groupi_n_253' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AND2XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND2XL' as output for net 'mul_194_38_n_51' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2X2' as output for net 'mul_194_38_n_82' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NAND2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND2X2' as output for net 'mul_195_46_n_104' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'BUFX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'BUFX2' as output for net 'mul_197_52_n_16' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OR4X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR4X2' as output for net 'n_44' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OR4X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR4X1' as output for net 'n_45' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'DFFX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'QN' of cell 'DFFX1' as output for net 'n_59' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI21XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI21XL' as output for net 'n_130' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI22X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI22X1' as output for net 'n_148' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AOI2BB2X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI2BB2X1' as output for net 'n_220' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'OAI211X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI211X1' as output for net 'n_277' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'CLKMX2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKMX2X2' as output for net 'n_283' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'INVX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'INVX2' as output for net 'n_284' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'MXI2XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'MXI2XL' as output for net 'n_289' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'CLKBUFX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKBUFX2' as output for net 'FE_PHN935_fract_48_8' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFX1' as output for net 's_exp_10_i[9]' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFX2' as output for net 's_exp_10_i[4]' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFQX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFQX2' as output for net 's_exp_10_i[0]' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'NAND2BX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND2BX2' as output for net 'n_5' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OAI2BB2XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI2BB2XL' as output for net 'n_11' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'QN' of cell 'DFFX2' as output for net 'n_22' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFX4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'QN' of cell 'DFFX4' as output for net 'n_84' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AND2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND2X2' as output for net 'n_109' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AND3XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND3XL' as output for net 'n_196' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI221X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI221X1' as output for net 'n_246' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI211XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI211XL' as output for net 'n_248' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AND4X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND4X1' as output for net 'n_313' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI211X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI211X2' as output for net 'n_353' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'NOR3BX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR3BX2' as output for net 'n_357' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI31X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI31X2' as output for net 'n_378' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OAI31X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI31X2' as output for net 'n_379' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OR2X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR2X2' as output for net 'n_386' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AO21X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AO21X1' as output for net 'n_440' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AO22X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AO22X1' as output for net 'n_516' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OA22X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OA22X1' as output for net 'n_523' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OR2X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR2X4' as output for net 'n_529' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI31X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI31X1' as output for net 'n_613' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OAI221X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI221X1' as output for net 'n_832' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI222X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI222X2' as output for net 'n_978' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI222X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI222X1' as output for net 'n_1070' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI221X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI221X2' as output for net 'n_1126' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OAI22X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI22X2' as output for net 'n_1149' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OR3X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OR3X2' as output for net 'n_1307' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'OAI32X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'OAI32X1' as output for net 'n_1338' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI211X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI211X4' as output for net 'n_1343' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'NOR3X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR3X4' as output for net 'n_1416' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI221X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI221X4' as output for net 'n_1924' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AOI211X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AOI211X1' as output for net 'n_1963' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'NOR4X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR4X2' as output for net 'n_2089' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'NOR4X1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR4X1' as output for net 'n_2090' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'AND3X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND3X2' as output for net 'n_2118' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] Cell 'DFFRHQX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFRHQX1' as output for net 'done_o' in module 'fpu_fsm'.
+[05/31 10:48:13     49s] Cell 'DFFRX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFRX1' as output for net 'count[0]' in module 'fpu_fsm'.
+[05/31 10:48:13     49s] Cell 'DFFRX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'QN' of cell 'DFFRX1' as output for net 'n_0' in module 'fpu_fsm'.
+[05/31 10:48:13     49s] Cell 'NAND3BXL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND3BXL' as output for net 'n_29' in module 'fpu_fsm'.
+[05/31 10:48:13     49s] Cell 'CLKINVX6' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKINVX6' as output for net 'product_o[31]' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'CLKINVX8' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKINVX8' as output for net 'product_o[30]' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'CLKBUFX6' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKBUFX6' as output for net 'product_o[28]' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'CLKBUFX8' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKBUFX8' as output for net 'infinit_o' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'BUFX3' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'BUFX3' as output for net 'FE_OFN543_b_i_23' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'CLKBUFX12' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKBUFX12' as output for net 'CTS_7' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'AND4X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND4X4' as output for net 'n_34' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'NOR3BX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR3BX1' as output for net 'n_121' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'NAND3X2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NAND3X2' as output for net 'n_128' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'NOR2BX2' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2BX2' as output for net 'n_132' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'INVX3' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'INVX3' as output for net 'n_137' in module 'multiplier32FP'.
+[05/31 10:48:13     49s] Cell 'MDFFHQX1' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'MDFFHQX1' as output for net '\prod2[3][1] [14]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'DFFHQX8' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFHQX8' as output for net 'count[1]' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'CLKAND2X12' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'CLKAND2X12' as output for net 'n_18' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AND3X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND3X4' as output for net 'n_38' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AND2X4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND2X4' as output for net 'n_39' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'AND2X6' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'AND2X6' as output for net 'n_57' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'NOR2XL' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Y' of cell 'NOR2XL' as output for net 'n_81' in module 'mul_24'.
+[05/31 10:48:13     49s] Cell 'DFFX4' is referenced in the netlist but not defined in netlist, lef or timing library. Using the net connection data to mark the pin 'Q' of cell 'DFFX4' as output for net 's_shr2[0]' in module 'post_norm_mul'.
+[05/31 10:48:13     49s] 107 empty module found.
+[05/31 10:48:13     49s] Starting recursive module instantiation check.
+[05/31 10:48:13     49s] No recursion found.
+[05/31 10:48:13     49s] Term dir updated for 0 vinsts of 107 cells.
+[05/31 10:48:13     49s] Building hierarchical netlist for Cell multiplier32FP ...
+[05/31 10:48:13     49s] *** Netlist is unique.
+[05/31 10:48:13     49s] ** info: there are 112 modules.
+[05/31 10:48:13     49s] ** info: there are 0 stdCell insts.
+[05/31 10:48:13     49s] 
+[05/31 10:48:13     49s] *** Memory Usage v#1 (Current mem = 1152.027M, initial mem = 494.973M) ***
+[05/31 10:48:13     50s] **WARN: (IMPSYT-7328):	The design has been initialized in physical-only mode because the init_mmmc_file global variable was not defined. Timing analysis will not be possible within this session. You can only use commands that do not depend on timing data. If you need to use timing, you need to restart with an init_mmmc_file to define the timing setup, or you can save this design and use restoreDesign -mmmc_file <viewDef.tcl> to add the timing setup information.
+[05/31 10:48:13     50s] Extraction setup Started 
+[05/31 10:48:13     50s] 
+[05/31 10:48:13     50s] Trim Metal Layers:
+[05/31 10:48:13     50s] 
+[05/31 10:48:13     50s] Trim Metal Layers:
+[05/31 10:48:13     50s] 
+[05/31 10:48:13     50s] Trim Metal Layers:
+[05/31 10:48:13     50s] 
+[05/31 10:48:13     50s] *** Summary of all messages that are not suppressed in this session:
+[05/31 10:48:13     50s] Severity  ID               Count  Summary                                  
+[05/31 10:48:13     50s] WARNING   IMPSYT-7328          1  The design has been initialized in physi...
+[05/31 10:48:13     50s] WARNING   IMPSYT-10026         1  No LEF physical data was provided but ti...
+[05/31 10:48:13     50s] WARNING   IMPDB-2504         107  Unable to find netlist cell in the desig...
+[05/31 10:48:13     50s] *** Message Summary: 109 warning(s), 0 error(s)
+[05/31 10:48:13     50s] 
+[05/31 10:48:16     50s] <CMD> zoomBox 0.10400 0.05600 0.11600 0.06200
+[05/31 10:48:17     50s] <CMD> zoomBox 0.10200 0.05300 0.11900 0.06200
+[05/31 10:48:17     50s] <CMD> zoomBox 0.09900 0.05200 0.12100 0.06300
+[05/31 10:48:17     50s] <CMD> zoomBox 0.10000 0.05200 0.11900 0.06200
+[05/31 10:48:17     50s] <CMD> zoomBox 0.10100 0.05200 0.11600 0.06000
+[05/31 10:48:18     50s] <CMD> zoomBox 0.10100 0.05300 0.11500 0.06000
+[05/31 10:48:18     50s] <CMD> zoomBox 0.10200 0.05400 0.11400 0.06000
+[05/31 10:48:18     51s] <CMD> zoomBox 0.10000 0.05300 0.11600 0.06100
+[05/31 10:48:18     51s] <CMD> zoomBox 0.09600 0.05100 0.12000 0.06300
+[05/31 10:48:18     51s] <CMD> zoomBox 0.09400 0.05000 0.12200 0.06400
+[05/31 10:48:19     51s] <CMD> zoomBox 0.09200 0.04800 0.12500 0.06500
+[05/31 10:48:19     51s] <CMD> zoomBox 0.08600 0.04400 0.13300 0.06800
+[05/31 10:48:19     51s] <CMD> zoomBox 0.05800 0.02800 0.16500 0.08200
+[05/31 10:48:20     51s] <CMD> zoomBox -0.00300 -0.01000 0.23800 0.11200
+[05/31 10:48:20     51s] <CMD> zoomBox -0.23500 -0.15200 0.52000 0.23100
+[05/31 10:48:20     51s] <CMD> zoomBox -0.66400 -0.41300 1.04400 0.45300
+[05/31 10:48:21     51s] <CMD> zoomBox -3.20900 -1.97000 4.17300 1.77200
+[05/31 10:48:23     52s] <CMD> zoomBox -0.96000 -0.84500 1.82500 0.56700
+[05/31 10:48:23     52s] <CMD> zoomBox -0.75600 -0.74300 1.61300 0.45800
+[05/31 10:48:23     52s] <CMD> zoomBox -0.20300 -0.46600 1.03600 0.16200
+[05/31 10:48:23     52s] <CMD> zoomBox 0.03000 -0.34900 0.79100 0.03700
+[05/31 10:48:29     53s] 
+--------------------------------------------------------------------------------
+Exiting Innovus on Sun May 31 10:48:29 2026
+  Total CPU time:     0:00:55
+  Total real time:    0:02:13
+  Peak memory (main): 1350.89MB
+
+[05/31 10:48:29     53s] 
+[05/31 10:48:29     53s] *** Memory Usage v#1 (Current mem = 1412.504M, initial mem = 494.973M) ***
+[05/31 10:48:29     53s] 
+[05/31 10:48:29     53s] *** Summary of all messages that are not suppressed in this session:
+[05/31 10:48:29     53s] Severity  ID               Count  Summary                                  
+[05/31 10:48:29     53s] WARNING   IMPSYT-7328          1  The design has been initialized in physi...
+[05/31 10:48:29     53s] WARNING   IMPSYT-10026         1  No LEF physical data was provided but ti...
+[05/31 10:48:29     53s] WARNING   IMPDB-2504         107  Unable to find netlist cell in the desig...
+[05/31 10:48:29     53s] *** Message Summary: 109 warning(s), 0 error(s)
+[05/31 10:48:29     53s] 
+[05/31 10:48:29     53s] --- Ending "Innovus" (totcpu=0:00:53.3, real=0:02:10, mem=1412.5M) ---

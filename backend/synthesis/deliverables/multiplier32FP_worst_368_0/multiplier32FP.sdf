@@ -1,7 +1,7 @@
 (DELAYFILE
   (SDFVERSION  "OVI 3.0")
   (DESIGN      "multiplier32FP")
-  (DATE        "Tue May 26 08:34:54 -03 2026")
+  (DATE        "Fri Jun 12 18:05:59 -03 2026")
   (VENDOR      "Cadence, Inc.")
   (PROGRAM     "Genus(TM) Synthesis Solution")
   (VERSION     "21.19-s055_1")
