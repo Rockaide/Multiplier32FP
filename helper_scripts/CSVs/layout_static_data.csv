@@ -1,0 +1,3 @@
+freq MHz (clk),library,Setup Slack (ns),Hold Slack (ns),Critical Startpoint,Critical Endpoint
+10,worst,92.433,0.066,i_post_norm_mul/s_fract_48_i_reg[46]/CK,i_post_norm_mul/s_zeros_reg[0]/D
+371,worst,0.005,0.070,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][1][16]/D
