@@ -498,6 +498,7 @@ clean:
 	@echo "Cleaning temporary logs, simulation data, and history..."
 	@echo "=================================================="
 	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log*
+	rm -rf $(FRONTEND_DIR)/.simvision $(FRONTEND_DIR)/xrun.key $(FRONTEND_DIR)/waves.shm
 	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/*.sdf.X
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv $(BACKEND_SYNTH_DIR)/rc*
 	rm -rf $(BACKEND_LAYOUT_DIR)/innovus* $(BACKEND_LAYOUT_DIR)/*.log* $(BACKEND_LAYOUT_DIR)/*.cmd*
