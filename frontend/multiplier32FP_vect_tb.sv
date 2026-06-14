@@ -168,7 +168,7 @@ module multiplier32FP_vect_tb #(
         #(half_period_ns) rst_n = 1'b1; 
 
         // 3. First execution timing alignment
-        #(half_period_ns); 
+        // Bypassed here to be handled contextually inside the file processing loop below.
         
         // 4. File processing loop
         while (!$feof(fd_in)) begin
@@ -178,13 +178,23 @@ module multiplier32FP_vect_tb #(
                 a_i <= val_a;
                 b_i <= val_b;
                 
-                if (test_count > 0) begin
+                // Rules split based on operation index
+                if (test_count == 0) begin
+                    // RULE FOR VECTOR 0: Launch exactly at 15.000 ns
+                    if ($realtime < 15.0) begin
+                        #(15.0 - $realtime);
+                    end
+                    start_i <= 1'b1;
+                    #(half_period_ns * 2); // Keep high for exactly 1 clock period
+                    start_i <= 1'b0;
+                end else begin
+                    // EXISTING RULE FOR ALL SUBSEQUENT VECTORS
                     repeat(2) @(posedge clk);
-                end
 
-                start_i <= 1'b1;
-                @(posedge clk);
-                start_i <= 1'b0;
+                    start_i <= 1'b1;
+                    @(posedge clk);
+                    start_i <= 1'b0;
+                end
 
                 @(posedge done_o);
                 
