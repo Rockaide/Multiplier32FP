@@ -141,9 +141,11 @@ VECT ?= 0
 ifeq ($(VECT), 1)
 	TB_MODULE_NAME = $(DESIGNS)_vect_tb
 	TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+	TB_DUV = $(TB_MODULE_NAME).DUV
 else
 	TB_MODULE_NAME = $(DESIGNS)_tb
 	TB_MAIN_FILE = $(PROJECT_DIR)/$(FRONTEND_DIR)/$(TB_MODULE_NAME).sv
+	TB_DUV = :DUV
 endif
 
 # Xcelium (Frontend generic RTL simulation with filelist)
@@ -168,7 +170,7 @@ SDF_FILE_SYNTH  = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$
 TECH_V_LIB	  = $(TECH_DIR)/gsclib045_all_v4.4/gsclib045/verilog/slow_vdd1v0_basicCells.v
 NETLIST_FILE	= $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v
 TB_FILES		= $(TB_MAIN_FILE)
-NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v
+NETLIST_FILE_POST_LAYOUT = $(BACKEND_DIR)/layout/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_0/$(DESIGNS).v
 
 # Post-Synthesis VCD Generation flags
 XRUN_GLS_VCD_FLAGS = -timescale 1ns/10ps -mess -64bit -sv -v200x -v93 -iocondsort -access +rwc ${GUI_FLAG_VCD} -clean -defparam $(TB_MODULE_NAME).HALF_PERIOD_PS=$(HALF_PERIOD_PS) -defparam $(TB_MODULE_NAME).WAIT_TIME_NS=$(WAIT_TIME_NS) -defparam $(TB_MODULE_NAME).SIM_RUNTIME=$(RUNTIME)
@@ -239,7 +241,7 @@ sim_gls_vcd: sim_rtl
 	@mkdir -p $(CSVS_DIR)
 	@echo "Generating dynamic SDF command file..."
 	@echo 'COMPILED_SDF_FILE = "$(SDF_FILE_SYNTH)",' > $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'SCOPE = :DUV,' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
+	@echo 'SCOPE = $(TB_DUV),' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'LOG_FILE = "sdf.log",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'MTM_CONTROL = "MAXIMUM",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'SCALE_FACTORS = "1.0:1.0:1.0",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
@@ -259,7 +261,7 @@ sim_post_layout: sim_rtl
 	@mkdir -p $(CSVS_DIR)
 	@echo "Generating dynamic SDF command file..."
 	@echo 'COMPILED_SDF_FILE = "$(SDF_FILE)",' > $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
-	@echo 'SCOPE = :DUV,' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
+	@echo 'SCOPE = $(TB_DUV),' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'LOG_FILE = "sdf.log",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'MTM_CONTROL = "MAXIMUM",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
 	@echo 'SCALE_FACTORS = "1.0:1.0:1.0",' >> $(PROJECT_DIR)/frontend/sdf_cmd_file.cmd
