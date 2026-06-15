@@ -142,7 +142,7 @@ def main():
         ax.legend()
         
         # Inset zoom logic (Placed top-left since area data goes up and right)
-        add_inset_zoom(ax, x_val, y_val, [360, 375], 'o', 'tab:blue', max_freq_zero_slack, loc=[0.1, 0.55, 0.35, 0.35])
+        add_inset_zoom(ax, x_val, y_val, [360, 375], 'o', 'tab:blue', max_freq_zero_slack, loc=[0.6, 0.25, 0.35, 0.35])
 
         ax.set_xlabel('Frequency (MHz)')
         ax.set_ylabel('Total Area (um²)')

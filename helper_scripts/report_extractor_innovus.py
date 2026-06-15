@@ -11,7 +11,7 @@ output_power_csv = os.path.join(csv_dir, "layout_power_data.csv")
 output_final_csv = os.path.join(csv_dir, "layout_TL_results.csv")
 
 # Only process folders matching these frequencies
-target_freqs = [10, 371]
+target_freqs = [10, 368]
 
 # --- Regexes for Innovus ---
 re_folder = re.compile(rf"^{design_name}_([a-zA-Z0-9\_]+)_(\d+)_(\d+)$")

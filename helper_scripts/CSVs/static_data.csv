@@ -56,4 +56,5 @@ freq MHz (clk),library,cell count,net um2,total um2,gates total um2 equivalent,t
 700,worst,4716,5618.023,23591.833,22993.989,-1198,i_mul_24/count_reg[0]/CK,i_mul_24/prod2_reg[3][2][16]/D
 725,worst,4824,5716.816,24313.408,23697.278,-1251,i_mul_24/count_reg[0]/CK,i_mul_24/prod2_reg[3][3][9]/D1
 750,worst,4830,5751.216,24176.808,23564.141,-1314,i_mul_24/count_reg[1]/CK,i_mul_24/sum_reg[3][23]/D1
+774,worst,4821,5706.647,24249.203,23634.701,-1365,i_mul_24/count_reg[0]/CK,i_mul_24/prod2_reg[3][3][9]/D1
 775,worst,4782,5695.567,24194.689,23581.568,-1359,i_mul_24/count_reg[0]/CK,i_mul_24/prod2_reg[3][2][15]/D

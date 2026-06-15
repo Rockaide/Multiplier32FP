@@ -2,6 +2,6 @@ freq MHz (clk),library,Setup Slack (ns),Hold Slack (ns),Critical Startpoint,Crit
 10,worst,92.433,0.066,i_post_norm_mul/s_fract_48_i_reg[46]/CK,i_post_norm_mul/s_zeros_reg[0]/D,0,1.15256622,77.73650721,76.58394
 10,worst,92.433,0.066,i_post_norm_mul/s_fract_48_i_reg[46]/CK,i_post_norm_mul/s_zeros_reg[0]/D,160551,1.14995864,46.75318546,45.60323
 10,worst,92.433,0.066,i_post_norm_mul/s_fract_48_i_reg[46]/CK,i_post_norm_mul/s_zeros_reg[0]/D,321102,1.14901265,41.92702136,40.77801
-371,worst,0.005,0.070,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][1][16]/D,0,1.38679178,3211.62090874,3210.23412
-371,worst,0.005,0.070,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][1][16]/D,4425,1.38641676,1730.63673781,1729.25032
-371,worst,0.005,0.070,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][1][16]/D,8851,1.38429920,1530.60665820,1529.22236
+368,worst,0.010,0.065,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][3][10]/D,0,1.39636313,3202.38716470,3200.99080
+368,worst,0.010,0.065,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][3][10]/D,4461,1.39522629,1761.76830157,1760.37308
+368,worst,0.010,0.065,i_mul_24/count_reg[1]/CK,i_mul_24/prod2_reg[0][3][10]/D,8922,1.39304869,1541.11118003,1539.71813
