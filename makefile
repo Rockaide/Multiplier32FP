@@ -190,9 +190,12 @@ all: sim_rtl
 # Execution Commands
 # =========================================================================
 
+# Runs the RTL simulation using Xcelium with the specified flags. 
 sim_rtl:
 	bash -l -c "module add $(XCELIUM_MOD) && cd $(FRONTEND_DIR) && xrun $(XRUN_FLAGS)"
 
+# Checks if a synthesis folder already exists for the given frequency and runtime. If it does, it skips synthesis; 
+# otherwise, it runs Genus with the specified flags.
 synth:
 	@MATCHING_DIR=$$(find $(BACKEND_DIR)/synthesis/reports -maxdepth 1 -type d -name "$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)" 2>/dev/null | head -n 1); \
 	if [ -n "$$MATCHING_DIR" ] && [ "$(VCD)" != "1" ]; then \
@@ -207,6 +210,7 @@ synth:
 		bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus $(GENUS_FLAGS)"; \
 	fi
 
+# Calculates power using Genus with the generated VCD (if RUNTIME > 0) or vectorless (if RUNTIME = 0)
 power_synth:
 	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
 	@echo "==============================================================="
@@ -215,7 +219,8 @@ power_synth:
 	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus -abort_on_error -lic_startup Genus_Synthesis -lic_startup_options Genus_Physical_Opt -log genus_power_$(FREQ_MHZ)MHz_$(RUNTIME) -overwrite -f ../scripts/power_genus.tcl"
 
 
-
+# Checks if a layout folder already exists for the given frequency and runtime. If it does, it skips Innovus Layout; 
+# otherwise, it runs Innovus with the specified flags.
 layout_innovus:
 	@MATCHING_DIR=$$(find $(LAYOUT_DIR)/reports -maxdepth 1 -type d -name "$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)" 2>/dev/null | head -n 1); \
 	if [ -n "$$MATCHING_DIR" ]; then \
@@ -230,12 +235,25 @@ layout_innovus:
 		mkdir -p $(LAYOUT_DIR)/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME); \
 		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus $(INNOVUS_FLAGS)"; \
 	fi
-		
-layout_genus:
-	@mkdir -p $(BACKEND_DIR)/synthesis/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	@mkdir -p $(BACKEND_DIR)/synthesis/deliverables/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(BACKEND_LAYOUT_DIR) && genus $(GENUS_LAYOUT_FLAGS)"
 
+# Calculates power using Innovus with the generated VCD (if RUNTIME > 0) or vectorless (if RUNTIME = 0)
+innovus_power:
+	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
+	@if [ "$(RUNTIME)" = "0" ]; then \
+		echo "==============================================================="; \
+		echo "INFO: RUNTIME is 0. Running vectorless power analysis."; \
+		echo "Script: power_runtime0.tcl"; \
+		echo "==============================================================="; \
+		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT_RUNTIME0) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_0.log"; \
+	else \
+		echo "==============================================================="; \
+		echo "INFO: RUNTIME is $(RUNTIME). Running VCD-based power analysis."; \
+		echo "Script: power.tcl"; \
+		echo "==============================================================="; \
+		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_$(RUNTIME).log"; \
+	fi
+
+# Simulation for generation of the VCD after logic synthesis (with SDF from synthesis)
 sim_gls_vcd: sim_rtl
 	@mkdir -p $(DUMP_DIR)
 	@mkdir -p $(CSVS_DIR)
@@ -334,22 +352,7 @@ vcd_layout:
 	@echo "=================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2)
 
-innovus_power:
-	@mkdir -p $(LAYOUT_DIR)/reports/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)_$(RUNTIME)
-	@if [ "$(RUNTIME)" = "0" ]; then \
-		echo "==============================================================="; \
-		echo "INFO: RUNTIME is 0. Running vectorless power analysis."; \
-		echo "Script: power_runtime0.tcl"; \
-		echo "==============================================================="; \
-		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT_RUNTIME0) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_0.log"; \
-	else \
-		echo "==============================================================="; \
-		echo "INFO: RUNTIME is $(RUNTIME). Running VCD-based power analysis."; \
-		echo "Script: power.tcl"; \
-		echo "==============================================================="; \
-		bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(LAYOUT_DIR)/work && innovus -stylus -no_gui -init $(POWER_SCRIPT) -overwrite -log innovus_power_$(FREQ_MHZ)MHz_$(RUNTIME).log"; \
-	fi
-# --- Complete Flow Execution ---
+# Performs the full flow of synthesis, layout, post-layout simulation, and power analysis for a single configuration of frequency and library type.
 flow_full_single_config:
 	@echo "========================================================="
 	@echo "       STEP 1: BASE LOGICAL SYNTHESIS (GENUS)         "
@@ -369,18 +372,26 @@ flow_full_single_config:
 	@echo "========================================================="
 	$(MAKE) innovus_power FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(RUNTIME)
 
+# These targets perform a frequency sweep to find the maximum operational frequency for both synthesis and layout. 
+# The synthesis sweep starts from a defined frequency and increments until negative slack is reached. 
+# The layout sweep starts from a high frequency and decrements until negative slack is found.
+
 # =========================================================================
 # Maximum Frequency Finder Sweep
 # =========================================================================
-export START_FREQ ?= 100
-export FREQ_STEP ?= 1
+
+# Values for START_FREQ_SYNTH and FREQ_STEP_SYNTH can be overridden when invoking make, e.g.:
+# make find_max_freq START_FREQ=50 FREQ_STEP=5
+# Will start the synthesis frequency sweep at 50 MHz and increment by 5 MHz each step.
+export START_FREQ_SYNTH ?= 100
+export FREQ_STEP_SYNTH ?= 1
 
 find_max_freq:
 	@echo "==============================================================="
 	@echo "Starting frequency sweep to find maximum operational frequency."
 	@echo "==============================================================="
-	@freq=$(START_FREQ); \
-	step=$(FREQ_STEP); \
+	@freq=$(START_FREQ_SYNTH); \
+	step=$(FREQ_STEP_SYNTH); \
 	while true; do \
 		echo "Testing FREQ_MHZ=$$freq MHz..."; \
 		$(MAKE) synth FREQ_MHZ=$$freq; \
@@ -409,6 +420,10 @@ find_max_freq:
 # =========================================================================
 # Layout Maximum Frequency Finder Sweep
 # =========================================================================
+
+# Values for START_FREQ_LAYOUT and FREQ_STEP_LAYOUT can be overridden when invoking make, e.g.:
+# make find_max_freq_layout START_FREQ_LAYOUT=50 FREQ_STEP_LAYOUT=5
+# Will start the layout frequency reverse-sweep at 50 MHz and decrement by 5 MHz each step.
 export START_FREQ_LAYOUT ?= 372
 export FREQ_STEP_LAYOUT ?= 25
 
@@ -450,21 +465,15 @@ find_max_freq_layout:
 # =========================================================================
 # Utilities & Visualizers
 # =========================================================================
-
-
-latex:
-	@echo "================================================================"
-	@echo "Extracting synthesis data to CSV and writting to latex table..."
-	@echo "================================================================"
-	python3 $(SCRIPTS_DIR)/Report_extractor_TL.py
-	python3 $(SCRIPTS_DIR)/latex_table_builder.py
 		
+# Launches the Genus Schematic Viewer with the specified frequency and library type. 
 genus_gui:
 	@echo "==============================================================="
 	@echo "Launching Genus Schematic Viewer: $(FREQ_MHZ) MHz | $(LIB_TYPE)"
 	@echo "==============================================================="
 	bash -l -c "module add $(GENUS_MOD) && cd $(BACKEND_SYNTH_DIR) && genus -gui -f ../scripts/view_design.tcl"
 
+# Launches the Innovus GUI for layout visualization with the specified frequency and library type. # It provides informational messages about the launch and uses a bash command to load the Innovus module and execute the viewer with the appropriate script.
 innovus_gui:
 	@echo "==============================================================="
 	@echo "Launching Innovus GUI for: $(FREQ_MHZ) MHz | $(LIB_TYPE) library"
@@ -472,6 +481,13 @@ innovus_gui:
 	@echo "==============================================================="
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && cd $(BACKEND_LAYOUT_WORK_DIR) && innovus -stylus -init ../scripts/view_layout.tcl"
 		
+# Old target, not tested.
+# Used to evaluate timing slack when a netlist synthesized for one frequency
+# is analyzed at another target frequency. This helps compare the margin
+# available against a design synthesized for the target frequency.
+# E.g. if you synthesize for 372 MHz but want to see how it performs at 300 MHz, you can set SYNTH_FREQ=372 and TEST_FREQ=300 when invoking this target.
+# and it will run the timing analysis with the netlist synthesized at 372 MHz but using a test frequency of 300 MHz to see the slack margin.
+# Probably needs to be refactored to work with the current environment structure
 cross_sta:
 	@echo "==============================================================="
 	@echo "Running Static Timing Analysis"
@@ -483,32 +499,48 @@ cross_sta:
 		cd $(BACKEND_SYNTH_DIR) && \
 		genus -abort_on_error -log genus_cross_sta -overwrite -f ../scripts/cross_timing.tcl"
 		
+# Old target, not tested. 
+# Used for running UVM mixed-language simulations. 
+# The actual implementation of the UVM testbench and files is not present in the current project structure, so this target serves as a placeholder for future UVM integration.
 uvm_sim:
 	@echo "=================================================="
 	@echo "Running UVM Mixed-Language Simulation..."
 	@echo "=================================================="
 	bash -l -c "module add $(INNOVUS_MOD_DDI) && xrun $(XRUN_UVM_FLAGS)"
-		
+
+# Old target, not tested.
+# Used to launch the Cadence IMC Coverage Viewer for analyzing coverage data generated from simulations.
+# Mut be run after uvm_sim
 cov_gui:
 	@echo "=================================================="
 	@echo "Launching Cadence IMC Coverage Viewer..."
 	@echo "=================================================="
 	bash -l -c "module add $(IMC_MOD) && module add $(XCELIUM_MOD) && imc -load cov_work/scope/test"
 
+# =========================================================================
+# Cleaning Targets
+# =========================================================================
+
+# Basic clean target that removes temporary logs, simulation data, and history files generated by Xcelium, Genus, and Innovus. It also provides an informational message about the 'clean_all' target for deeper cleaning.
 clean:
 	@echo "=================================================="
 	@echo "Cleaning temporary logs, simulation data, and history..."
 	@echo "=================================================="
 	rm -rf $(FRONTEND_DIR)/xcelium.d $(FRONTEND_DIR)/xrun.history $(FRONTEND_DIR)/xrun.log*
 	rm -rf $(FRONTEND_DIR)/.simvision $(FRONTEND_DIR)/xrun.key $(FRONTEND_DIR)/waves.shm
-	rm -rf $(FRONTEND_DIR)/work $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/*.sdf.X
+	rm -rf $(FRONTEND_DIR)/work/* $(FRONTEND_DIR)/sdf.log $(FRONTEND_DIR)/vcd_sim.log $(FRONTEND_DIR)/*.sdf.X
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv $(BACKEND_SYNTH_DIR)/rc*
 	rm -rf $(BACKEND_LAYOUT_DIR)/innovus* $(BACKEND_LAYOUT_DIR)/*.log* $(BACKEND_LAYOUT_DIR)/*.cmd*
-	rm -rf $(BACKEND_LAYOUT_DIR)/work $(FRONTEND_DIR)/VCDs
+	rm -rf $(BACKEND_LAYOUT_DIR)/work/* $(BACKEND_SYNTH_DIR)/work/* $(FRONTEND_DIR)/VCDs
 	@echo "=================================================="
 	@echo "INFO: Run 'make clean_all' to permanently delete all VCDs, .db files, and reports."
 	@echo "=================================================="
 
+# The 'clean_all' target performs a deep clean by removing all VCD files, 
+# synthesis and layout reports, deliverables, and any generated .db files. 
+# This is intended for users who want to completely reset the project state and free up disk space after multiple runs.
+# BE WARNED THAT THIS WILL DELETE ALL GENERATED DATA INCLUDING VCDs, REPORTS, DELIVERABLES, AND .DB FILES WITHOUT PROMPTING FOR CONFIRMATION.
+# YOU WILL LOSE ALL SYNTHESIS AND LAYOUT RESULTS, POWER REPORTS, AND SIMULATION VCDs. USE THIS TARGET ONLY IF YOU ARE SURE YOU WANT TO PERMANENTLY DELETE ALL GENERATED DATA.
 clean_all: clean
 	@echo "=================================================="
 	@echo "Deep cleaning: Removing all VCDs, Reports, CSVs, and Deliverables..."
