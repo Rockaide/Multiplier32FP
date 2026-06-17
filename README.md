@@ -114,7 +114,7 @@ Para visualizar a lista completa de comandos disponíveis diretamente no termina
 ### Extrair dados dos reportes e plotar gráficos:
         cd helper_scripts
         python3 report_extractor.py
-        python3 graph_builder.pý
+        python3 graph_builder.py
 
 ### Limpar diretórios para entregável:
         make clean
