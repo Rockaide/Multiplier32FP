@@ -463,6 +463,45 @@ find_max_freq_layout:
 
 
 # =========================================================================
+# Aggregated SDF & VCD Generation
+# =========================================================================
+
+# Generates SDFs (0ns) and VCDs (X and 2X), then packages them in frontend/simulation
+generate_all_sim_data:
+	@echo "=================================================="
+	@echo "1. Generating SDFs (Synth & Layout for 0ns)"
+	@echo "=================================================="
+	$(MAKE) synth FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	$(MAKE) layout_innovus FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=0
+	@echo "=================================================="
+	@echo "2. Preparing Target Directory"
+	@echo "=================================================="
+	@mkdir -p $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)
+	@echo "=================================================="
+	@echo "3. Generating & Moving VCDs for X Runtime ($(CALC_RUNTIME) ns)"
+	@echo "=================================================="
+	@mkdir -p $(FRONTEND_DIR)/VCDs
+	$(MAKE) sim_gls_vcd FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@mv $(FRONTEND_DIR)/VCDs/*.vcd $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/synth_$(CALC_RUNTIME)ns.vcd 2>/dev/null || echo "INFO: No VCD found to move."
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME) VECT=1
+	@mv $(FRONTEND_DIR)/VCDs/*.vcd $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/layout_$(CALC_RUNTIME)ns.vcd 2>/dev/null || echo "INFO: No VCD found to move."
+	@echo "=================================================="
+	@echo "4. Generating & Moving VCDs for 2X Runtime ($(CALC_RUNTIME2) ns)"
+	@echo "=================================================="
+	$(MAKE) sim_gls_vcd FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
+	@mv $(FRONTEND_DIR)/VCDs/*.vcd $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/synth_$(CALC_RUNTIME2)ns.vcd 2>/dev/null || echo "INFO: No VCD found to move."
+	$(MAKE) sim_post_layout FREQ_MHZ=$(FREQ_MHZ) LIB_TYPE=$(LIB_TYPE) RUNTIME=$(CALC_RUNTIME2) VECT=1
+	@mv $(FRONTEND_DIR)/VCDs/*.vcd $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/layout_$(CALC_RUNTIME2)ns.vcd 2>/dev/null || echo "INFO: No VCD found to move."
+	@echo "=================================================="
+	@echo "5. Copying SDFs to Target Directory"
+	@echo "=================================================="
+	@cp $(SDF_FILE_SYNTH) $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/$(DESIGNS)_synth.sdf || echo "INFO: Synth SDF not found."
+	@cp $(SDF_FILE) $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)/$(DESIGNS)_layout.sdf.X || echo "INFO: Layout SDF not found."
+	@echo "=================================================="
+	@echo "SUCCESS: All data consolidated in $(DUMP_DIR)/$(DESIGNS)_$(LIB_TYPE)_$(FREQ_MHZ)"
+	@echo "=================================================="
+	
+# =========================================================================
 # Utilities & Visualizers
 # =========================================================================
 		
