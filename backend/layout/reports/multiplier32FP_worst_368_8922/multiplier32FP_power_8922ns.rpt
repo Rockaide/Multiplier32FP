@@ -24,7 +24,7 @@ RC Extraction called in multi-corner(2) mode.
 Process corner(s) are loaded.
  Corner: rc_worst
  Corner: rc_best
-extractDetailRC Option : -outfile /home/ufsm00051/filipe.eismann/projetos/Multiplier32FP/backend/layout/work/innovus_temp_3171538_851c918c-8606-47d1-8d65-0310b7a3c25b_ecomp_filipe.eismann_pDdhQL/multiplier32FP_3171538_851c918c-8606-47d1-8d65-0310b7a3c25b_q2bTUg.rcdb.d  -basic
+extractDetailRC Option : -outfile /home/ufsm00291/ufsm00291-lima202020189/projetos/multiplier32FP/multiplier32FP/backend/layout/work/innovus_temp_446889_515336c6-8ea7-4fd1-93db-e671e563abe5_ecomp_ufsm00291-lima202020189_XdQRvK/multiplier32FP_446889_515336c6-8ea7-4fd1-93db-e671e563abe5_jS0LeF.rcdb.d  -basic
 RC Mode: PostRoute extract_rc_effort_level low [Basic CapTable, RC Table Resistances]
       RC Corner Indexes            0       1   
 Capacitance Scaling Factor   : 1.00000 1.00000 
@@ -34,47 +34,47 @@ Clock Cap. Scaling Factor    : 1.00000 1.00000
 Clock Res. Scaling Factor    : 1.00000 1.00000 
 Shrink Factor                : 1.00000
 Initializing multi-corner resistance tables ...
-Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 2889.6M)
-Extracted 10.0029% (CPU Time= 0:00:00.2  MEM= 2894.6M)
-Extracted 20.0034% (CPU Time= 0:00:00.2  MEM= 2894.6M)
-Extracted 30.0039% (CPU Time= 0:00:00.3  MEM= 2894.6M)
-Extracted 40.0043% (CPU Time= 0:00:00.3  MEM= 2894.6M)
-Extracted 50.0048% (CPU Time= 0:00:00.3  MEM= 2894.6M)
-Extracted 60.0029% (CPU Time= 0:00:00.3  MEM= 2894.6M)
-Extracted 70.0034% (CPU Time= 0:00:00.4  MEM= 2894.6M)
-Extracted 80.0039% (CPU Time= 0:00:00.4  MEM= 2894.6M)
-Extracted 90.0043% (CPU Time= 0:00:00.5  MEM= 2894.6M)
-Extracted 100% (CPU Time= 0:00:00.6  MEM= 2894.6M)
+Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 2836.0M)
+Extracted 10.0029% (CPU Time= 0:00:00.2  MEM= 2841.2M)
+Extracted 20.0034% (CPU Time= 0:00:00.2  MEM= 2841.2M)
+Extracted 30.0039% (CPU Time= 0:00:00.3  MEM= 2841.2M)
+Extracted 40.0043% (CPU Time= 0:00:00.3  MEM= 2841.2M)
+Extracted 50.0048% (CPU Time= 0:00:00.3  MEM= 2841.2M)
+Extracted 60.0029% (CPU Time= 0:00:00.3  MEM= 2841.2M)
+Extracted 70.0034% (CPU Time= 0:00:00.4  MEM= 2841.2M)
+Extracted 80.0039% (CPU Time= 0:00:00.4  MEM= 2841.2M)
+Extracted 90.0043% (CPU Time= 0:00:00.5  MEM= 2841.2M)
+Extracted 100% (CPU Time= 0:00:00.6  MEM= 2841.2M)
 Number of Extracted Resistors     : 75019
 Number of Extracted Ground Cap.   : 75791
 Number of Extracted Coupling Cap. : 123688
 Filtering XCap in 'relativeAndCoupling' mode using values coupling_c_threshold=0.1fF, relative_c_threshold=1, and total_c_threshold=0fF.
  Corner: rc_worst
  Corner: rc_best
-Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 2891.1M)
-PostRoute (extract_rc_effort_level low) RC Extraction DONE (CPU Time: 0:00:01.0  Real Time: 0:00:01.0  MEM: 2898.141M)
+Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 2838.8M)
+PostRoute (extract_rc_effort_level low) RC Extraction DONE (CPU Time: 0:00:00.9  Real Time: 0:00:01.0  MEM: 2844.906M)
 AAE_INFO: 1 threads acquired from CTE.
-Start delay calculation (fullDC) (1 T). (MEM=2915.62)
+Start delay calculation (fullDC) (1 T). (MEM=2862.23)
 *** Calculating scaling factor for fast libraries using the default operating condition of each library.
 Initializing multi-corner resistance tables ...
 Total number of fetched objects 4679
 AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
 AAE_INFO-618: Total number of nets in the design is 5059,  93.6 percent of the nets selected for SI analysis
-End delay calculation. (MEM=2939.59 CPU=0:00:02.7 REAL=0:00:02.0)
-End delay calculation (fullDC). (MEM=2917.95 CPU=0:00:03.4 REAL=0:00:04.0)
-Save waveform /home/ufsm00051/filipe.eismann/projetos/Multiplier32FP/backend/layout/work/innovus_temp_3171538_851c918c-8606-47d1-8d65-0310b7a3c25b_ecomp_filipe.eismann_pDdhQL/.AAE_jIkdvz/.AAE_3171538_851c918c-8606-47d1-8d65-0310b7a3c25b/waveform.data...
-Loading CTE timing window with TwFlowType 0...(CPU = 0:00:00.0, REAL = 0:00:00.0, MEM = 2928.8M)
+End delay calculation. (MEM=2885 CPU=0:00:02.8 REAL=0:00:03.0)
+End delay calculation (fullDC). (MEM=2864.54 CPU=0:00:03.3 REAL=0:00:03.0)
+Save waveform /home/ufsm00291/ufsm00291-lima202020189/projetos/multiplier32FP/multiplier32FP/backend/layout/work/innovus_temp_446889_515336c6-8ea7-4fd1-93db-e671e563abe5_ecomp_ufsm00291-lima202020189_XdQRvK/.AAE_VrUSoR/.AAE_446889_515336c6-8ea7-4fd1-93db-e671e563abe5/waveform.data...
+Loading CTE timing window with TwFlowType 0...(CPU = 0:00:00.0, REAL = 0:00:00.0, MEM = 2875.4M)
 Add other clocks and setupCteToAAEClockMapping during iter 1
-Loading CTE timing window is completed (CPU = 0:00:00.2, REAL = 0:00:00.0, MEM = 2928.8M)
+Loading CTE timing window is completed (CPU = 0:00:00.2, REAL = 0:00:00.0, MEM = 2875.4M)
 Starting SI iteration 2
-Start delay calculation (fullDC) (1 T). (MEM=2886.32)
+Start delay calculation (fullDC) (1 T). (MEM=2834.55)
 Glitch Analysis: View analysis_normal_fast_min -- Total Number of Nets Skipped = 42. 
 Glitch Analysis: View analysis_normal_fast_min -- Total Number of Nets Analyzed = 4679. 
 Total number of fetched objects 4679
 AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
 AAE_INFO-618: Total number of nets in the design is 5059,  0.0 percent of the nets selected for SI analysis
-End delay calculation. (MEM=2907.61 CPU=0:00:00.2 REAL=0:00:00.0)
-End delay calculation (fullDC). (MEM=2907.61 CPU=0:00:00.2 REAL=0:00:00.0)
+End delay calculation. (MEM=2846.16 CPU=0:00:00.2 REAL=0:00:00.0)
+End delay calculation (fullDC). (MEM=2846.16 CPU=0:00:00.2 REAL=0:00:00.0)
 Load RC corner of view analysis_normal_fast_min
 
 Begin Power Analysis
@@ -84,18 +84,18 @@ Begin Power Analysis
 
 Begin Processing Timing Library for Power Calculation
 
-Ended Processing Timing Library for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2877.23MB/5144.80MB/2877.23MB)
+Ended Processing Timing Library for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2823.96MB/5137.31MB/2823.96MB)
 
 
 
 Begin Processing Power Net/Grid for Power Calculation
 
-Ended Processing Power Net/Grid for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2877.23MB/5144.80MB/2877.23MB)
+Ended Processing Power Net/Grid for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2823.96MB/5137.31MB/2823.96MB)
 
 Begin Processing Timing Window Data for Power Calculation
 
 clk(368.053MHz) CK: assigning clock clk to net clk
-Ended Processing Timing Window Data for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2877.59MB/5144.80MB/2877.59MB)
+Ended Processing Timing Window Data for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2824.14MB/5137.31MB/2824.14MB)
 
 ** WARN:  (VOLTUS_POWR-1784): The SDC clock frequency 368.053MHz is being overwritten with the VCD clock frequency 368.139MHz for the clock 'clk' associated with the net
 'clk' from the TCF file. If the SDC clock frequency is required for static power calculation, use the command
@@ -103,34 +103,34 @@ Ended Processing Timing Window Data for Power Calculation: (cpu=0:00:00, real=0:
 
 Begin Processing User Attributes
 
-Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2877.59MB/5144.80MB/2877.59MB)
+Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2824.33MB/5137.31MB/2824.33MB)
 
 Begin Processing Signal Activity
 
 
 Starting Levelizing
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT)
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 10%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 20%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 30%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 40%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 50%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 60%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 70%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 80%
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT): 90%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT)
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 10%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 20%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 30%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 40%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 50%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 60%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 70%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 80%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 90%
 
 Finished Levelizing
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT)
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT)
 
 Starting Activity Propagation
-2026-Jun-14 14:47:50 (2026-Jun-14 17:47:50 GMT)
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT)
 ** INFO:  (VOLTUS_POWR-1356): No default input activity has been set. Defaulting to 0.2.
 Use 'set_default_switching_activity -input_activity' command to change the default activity value.
 
 
 Finished Activity Propagation
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT)
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT)
 
 Activity annotation summary:
         Primary Inputs : 67/67 = 100%
@@ -139,7 +139,7 @@ Activity annotation summary:
       Tristate outputs : 0/0 = 0%
             Total Nets : 4679/4679 = 100%
 
-Ended Processing Signal Activity: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2878.00MB/5144.80MB/2878.00MB)
+Ended Processing Signal Activity: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2824.75MB/5137.31MB/2824.75MB)
 
 Begin Power Computation
 
@@ -152,49 +152,49 @@ Begin Power Computation
 
 
 Starting Calculating power
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT)
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT)
  ... Calculating switching power
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 10%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 20%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 30%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 40%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 50%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 10%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 20%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 30%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 40%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 50%
  ... Calculating internal and leakage power
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 60%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 70%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 80%
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT): 90%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 60%
+2026-Jun-16 15:01:32 (2026-Jun-16 18:01:32 GMT): 70%
+2026-Jun-16 15:01:33 (2026-Jun-16 18:01:33 GMT): 80%
+2026-Jun-16 15:01:33 (2026-Jun-16 18:01:33 GMT): 90%
 
 Finished Calculating power
-2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT)
+2026-Jun-16 15:01:33 (2026-Jun-16 18:01:33 GMT)
       # of MSMV cell(s) missing power_level: 0
-Ended Power Computation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2879.41MB/5144.80MB/2879.41MB)
+Ended Power Computation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2824.99MB/5137.31MB/2824.99MB)
 
 Begin Processing User Attributes
 
 Begin Processing set_power
 Ended Processing set_power: (cpu=0:00:00, real=0:00:00,
-mem(process/total/peak)=2879.41MB/5144.80MB/2879.41MB)
-Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2879.41MB/5144.80MB/2879.41MB)
+mem(process/total/peak)=2824.99MB/5137.31MB/2824.99MB)
+Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=2824.99MB/5137.31MB/2824.99MB)
 
-Ended Power Analysis: (cpu=0:00:01, real=0:00:01, mem(process/total/peak)=2879.53MB/5144.80MB/2879.53MB)
+Ended Power Analysis: (cpu=0:00:01, real=0:00:01, mem(process/total/peak)=2826.18MB/5137.31MB/2826.18MB)
 
 Begin Boundary Leakage Calculation
 Ended Boundary Leakage Calculation: (cpu=0:00:00, real=0:00:00,
-mem(process/total/peak)=2879.53MB/5144.80MB/2879.53MB)
+mem(process/total/peak)=2826.18MB/5137.31MB/2826.18MB)
 Begin Static Power Report Generation
 *----------------------------------------------------------------------------------------
 *	Innovus 25.13-s088_1 (64bit) 03/26/2026 12:37 (Linux 4.18.0-305.el8.x86_64)
 *	
 *
-* 	Date & Time:	2026-Jun-14 14:47:51 (2026-Jun-14 17:47:51 GMT)
+* 	Date & Time:	2026-Jun-16 15:01:33 (2026-Jun-16 18:01:33 GMT)
 *
 *----------------------------------------------------------------------------------------
 *
 *	Design: multiplier32FP
 *
 *	Liberty Libraries used:
-*	        analysis_normal_fast_min: /home/ufsm00051/filipe.eismann/projetos/Multiplier32FP/backend/layout/deliverables/multiplier32FP_worst_368_0/final.enc/libs/mmmc/fast_vdd1v2_basicCells.lib
+*	        analysis_normal_fast_min: /home/ufsm00291/ufsm00291-lima202020189/projetos/multiplier32FP/multiplier32FP/backend/layout/deliverables/multiplier32FP_worst_368_0/final.enc/libs/mmmc/fast_vdd1v2_basicCells.lib
 *
 *	Parasitic Files used:
 *
@@ -203,7 +203,7 @@ Begin Static Power Report Generation
 *       User-Defined Activity : N.A.
 *
 *	Switching Activity File used:
-*	        /home/ufsm00051/filipe.eismann/projetos/Multiplier32FP/frontend/VCDs/multiplier32FP_worst_368_8922.vcd
+*	        /home/ufsm00291/ufsm00291-lima202020189/projetos/multiplier32FP/multiplier32FP/frontend/VCDs/multiplier32FP_worst_368_8922.vcd
 *                  Vcd Window used(Start Time, Stop Time):  
 *                Vcd Scale Factor: 1
 *
@@ -288,5 +288,5 @@ Clock Static Probability:  0.5000
 ** INFO:  (VOLTUS_POWR-3465): There are 0 decaps and 0 fillers in the design
 
 Ended Static Power Report Generation: (cpu=0:00:00, real=0:00:00,
-mem(process/total/peak)=2881.77MB/5144.80MB/2881.77MB)
+mem(process/total/peak)=2828.35MB/5137.31MB/2828.35MB)
 

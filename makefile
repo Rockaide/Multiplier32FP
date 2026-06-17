@@ -532,6 +532,7 @@ clean:
 	rm -rf $(BACKEND_SYNTH_DIR)/genus* $(BACKEND_SYNTH_DIR)/fv $(BACKEND_SYNTH_DIR)/rc*
 	rm -rf $(BACKEND_LAYOUT_DIR)/innovus* $(BACKEND_LAYOUT_DIR)/*.log* $(BACKEND_LAYOUT_DIR)/*.cmd*
 	rm -rf $(BACKEND_LAYOUT_DIR)/work/* $(BACKEND_SYNTH_DIR)/work/* $(FRONTEND_DIR)/VCDs
+	rm -rf $(FRONTEND_DIR)/sdf_cmd_file.cmd $(BACKEND_LAYOUT_DIR)/work/.metrics
 	@echo "=================================================="
 	@echo "INFO: Run 'make clean_all' to permanently delete all VCDs, .db files, and reports."
 	@echo "=================================================="
