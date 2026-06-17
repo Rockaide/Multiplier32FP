@@ -110,3 +110,6 @@ Para visualizar a lista completa de comandos disponíveis diretamente no termina
 
 ### Visualizar layout:
         make innovus_gui FREQ_MHZ=368 GUI=1
+
+### Limpar diretórios para entregável:
+        make clean
