@@ -14,7 +14,7 @@ Sintaxe Básica
 Bash:
 make <target> [VARIAVEL=valor]
 
-## Variáveis de Configuração Principais
+### Variáveis de Configuração Principais
 
     FREQ_MHZ: Define a frequência de operação do clock alvo em MHz (Padrão: 100).
 
@@ -24,7 +24,7 @@ make <target> [VARIAVEL=valor]
 
     GUI: Define 1 para abrir a interface gráfica do simulador (Xcelium) na simulação RTL.
 
-## Comandos de Execução (Targets)
+### Comandos de Execução (Targets)
 
 As opções abaixo cobrem os requisitos mínimos exigidos para a avaliação do fluxo.  
 
@@ -87,3 +87,26 @@ Arquivos de Saída (Netlist .v, SDF .sdf):
 Exemplo : multiplier32FP_worst_10_160551
 
 Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
+-----
+## Exemplo de uso sequencial para o trabalho
+### Preparar diretórios
+        make setup_dirs
+
+### Realizar simulação RTL (sem SDF) para a frequência máxima com o vetor de operandos e mostrar o GUI:
+        make sim_rtl FREQ_MHZ=368 VECT=1 GUI=1
+
+### Realizar síntese lógica para a frequência máxima, gerar VCDs e reports:
+        make vcd_synth FREQ_MHZ=368 VECT=1
+        # ou
+        make vcd_synth FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
+
+### Visualizar esquemático lógico:
+        make genus_gui FREQ_MHZ=368 GUI=1
+
+### Realizar síntese física para a frequência máxima, gerar VCDs e reports:
+        make vcd_layout FREQ_MHZ=368 VECT=1
+        # ou
+        make vcd_layout FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
+
+### Visualizar layout:
+        make innovus_gui FREQ_MHZ=368 GUI=1
