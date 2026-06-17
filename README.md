@@ -95,7 +95,7 @@ Para visualizar a lista completa de comandos disponíveis diretamente no termina
 ### Realizar simulação RTL (sem SDF) para a frequência máxima com o vetor de operandos e mostrar o GUI:
         make sim_rtl FREQ_MHZ=368 VECT=1 GUI=1
 
-### Realizar síntese lógica para a frequência máxima, gerar VCDs e reports:
+### Realizar síntese lógica para a frequência máxima, gerar VCDs e reportes:
         make vcd_synth FREQ_MHZ=368 VECT=1
         # ou
         make vcd_synth FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
@@ -103,13 +103,18 @@ Para visualizar a lista completa de comandos disponíveis diretamente no termina
 ### Visualizar esquemático lógico:
         make genus_gui FREQ_MHZ=368 GUI=1
 
-### Realizar síntese física para a frequência máxima, gerar VCDs e reports:
+### Realizar síntese física para a frequência máxima, gerar VCDs e reportes:
         make vcd_layout FREQ_MHZ=368 VECT=1
         # ou
         make vcd_layout FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
 
 ### Visualizar layout:
         make innovus_gui FREQ_MHZ=368 GUI=1
+
+### Extrair dados dos reportes e plotar gráficos:
+        cd helper_scripts
+        python3 report_extractor.py
+        python3 graph_builder.pý
 
 ### Limpar diretórios para entregável:
         make clean
