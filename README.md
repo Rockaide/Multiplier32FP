@@ -113,10 +113,12 @@ Dentro do diretório principal do projeto (Multiplier32FP):
 ### Visualizar layout:
         make innovus_gui FREQ_MHZ=368 GUI=1
 
-### Extrair dados dos reportes e plotar gráficos:
+### Extrair dados dos reportes e plotar gráficos para todas as frequências que foram sintetizadas:
         cd helper_scripts
         python3 report_extractor.py
+        python3 report_extractor_innovus.py
         python3 graph_builder.py
+        python3 graph_builder_innovus.py
 
 ### Limpar diretórios para entregável:
         make clean
