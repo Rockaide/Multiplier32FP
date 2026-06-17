@@ -18,6 +18,9 @@ HALF_PERIOD_PS := $(shell awk "BEGIN {printf \"%d\", 1000000.0 / (2 * $(CLEAN_FR
 WAIT_TIME_NS := $(shell awk "BEGIN {printf \"%d\", 500000.0 / $(CLEAN_FREQ)}")
 
 # Calculate exact runtime required for VCD generation based on frequency (1604500 base + 101ns buffer for rounding)
+# These runtimes are used to ensure that the simulation runs long enough to read all values in the vector 
+# and tocapture the necessary activity for accurate power analysis
+# The value of 1604500 is derived from the number of cycles needed to read the entire vector at 10 MHz, and 101ns is added as a buffer to ensure all activity is captured.
 CALC_RUNTIME := $(shell awk "BEGIN {printf \"%d\", (1604500.0 / $(CLEAN_FREQ)) + 101}")
 CALC_RUNTIME2 := $(shell awk "BEGIN {printf \"%d\", ((1604500.0 / $(CLEAN_FREQ)) + 101) * 2}")
 
@@ -79,6 +82,7 @@ export NET_ONE = VDD
 export BUFFERS_CTS = CLKBUFX20 CLKBUFX16 CLKBUFX12 CLKBUFX8 CLKBUFX6 CLKBUFX4 CLKBUFX3 CLKBUFX2
 export INVERTERS_CTS = INVX20 CLKINVX20 INVX16 INVX12 INVX8 INVX6 INVX4 INVX3 INVX2 INVX1 INVXL
 
+#Antigos pins do somador
 #export LEFT_CORE_PINS = {a_i[0]} {a_i[1]} {a_i[2]} {a_i[3]} {a_i[4]} {a_i[5]} {a_i[6]} {a_i[7]}
 #export TOP_CORE_PINS = {b_i[0]} {b_i[1]} {b_i[2]} {b_i[3]} {b_i[4]} {b_i[5]} {b_i[6]} {b_i[7]}
 #export RIGHT_CORE_PINS = {sum_o[0]} {sum_o[1]} {sum_o[2]} {sum_o[3]} {sum_o[4]} {sum_o[5]} {sum_o[6]} {sum_o[7]}
