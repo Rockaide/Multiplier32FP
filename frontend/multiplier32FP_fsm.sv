@@ -9,7 +9,7 @@ module fpu_fsm (
     output logic update_out_o
 );
 
-    typedef enum logic {WAITING, BUSY} state_t;
+    typedef enum logic [1:0] {WAITING, BUSY, DONE} state_t;
     state_t state;
     
     logic [3:0] count;
@@ -47,7 +47,7 @@ module fpu_fsm (
                 
                 BUSY: begin
                     if (count == 4'd12) begin
-                        state        <= WAITING;
+                        state        <= DONE;
                         done_o       <= 1'b1;
                         count        <= 4'd0;
                     end else if (count == 4'd11) begin
@@ -59,6 +59,10 @@ module fpu_fsm (
                         done_o       <= 1'b0;
                         update_out_o <= 1'b0;
                     end
+                end
+
+                DONE: begin
+                    state <= WAITING;
                 end
                 
                 default: begin

@@ -221,9 +221,9 @@ module multiplier32FP_vect_tb #(
         $display("          Vectors Processed             ");
         $display(" Processed: %0d vectors.", test_count);
         $display(" Errors:    %0d", error_count);
-        $display(" Vector End Time: %0t ns", $realtime);
+        $display(" Vector End Time: %0t ps", $realtime);
         $display(" -------------------------------------- ");
-        $display(" -> Base RUNTIME needed: %0d", $ceil($realtime + 100));
+        $display(" -> Base RUNTIME needed: %0d ns", $ceil($realtime + 100));
         
         // --- NEW IDLE WAITING LOGIC ---
         if (SIM_RUNTIME > 0 && $realtime < SIM_RUNTIME) begin
