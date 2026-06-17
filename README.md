@@ -1,4 +1,4 @@
-Repository for the implementation and verification of a 32 bits multiplier for the subjet UFSM00291 - Projeto de Sistemas Digitais Integrados (Project of Integrated Digital Systems)
+Repository for the implementation and verification of a 32 bits multiplier for the subject UFSM00291 - Projeto de Sistemas Digitais Integrados (Project of Integrated Digital Systems)
 
 Repositório para implementação e verificação de um multiplicador de 32 bits para a disciplina UFSM00291 - Projeto de Sistemas Digitais Integrados
 
@@ -9,12 +9,13 @@ Este projeto foi estruturado para ser executado nos laboratórios do NUPEDEE ou 
 ## Instruções de Uso
 
 Para executar o fluxo ASIC, abra o terminal na pasta raiz do projeto e utilize o comando make seguido do alvo desejado e, opcionalmente, das variáveis de configuração.
-Sintaxe Básica
+
+### Sintaxe Básica
 
 Bash:
 make <target> [VARIAVEL=valor]
 
-## Variáveis de Configuração Principais
+### Variáveis de Configuração Principais
 
     FREQ_MHZ: Define a frequência de operação do clock alvo em MHz (Padrão: 100).
 
@@ -24,7 +25,7 @@ make <target> [VARIAVEL=valor]
 
     GUI: Define 1 para abrir a interface gráfica do simulador (Xcelium) na simulação RTL.
 
-## Comandos de Execução (Targets)
+### Comandos de Execução (Targets)
 
 As opções abaixo cobrem os requisitos mínimos exigidos para a avaliação do fluxo.  
 
@@ -86,4 +87,42 @@ Arquivos de Saída (Netlist .v, SDF .sdf):
 **O nome das configurações seguirá o modelo <NOME DO RTL>_<TIPO DA LIVRARIA>_$<FREQUÊNCIA DA SÍNTESE>_<TEMPO DE SIMULAÇÃO>
 Exemplo : multiplier32FP_worst_10_160551
 
-Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
+### Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
+
+#### OBS: Os arquivos VCD e sdf_cmd_file são gerados dinamicamente pelos scripts no momento da síntese/layout, ou seja, são tratados como temporários e não constam no entregável final.
+
+-----
+## Exemplo de uso sequencial para o trabalho
+Dentro do diretório principal do projeto (Multiplier32FP):
+
+### Preparar diretórios
+        make setup_dirs
+
+### Realizar simulação RTL (sem SDF) para a frequência máxima com o vetor de operandos e mostrar o GUI:
+        make sim_rtl FREQ_MHZ=368 VECT=1 GUI=1
+
+### Realizar síntese lógica para a frequência máxima, gerar VCDs e reportes:
+        make vcd_synth FREQ_MHZ=368 VECT=1
+        # ou
+        make vcd_synth FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
+
+### Visualizar esquemático lógico:
+        make genus_gui FREQ_MHZ=368 GUI=1
+
+### Realizar síntese física para a frequência máxima, gerar VCDs e reportes:
+        make vcd_layout FREQ_MHZ=368 VECT=1
+        # ou
+        make vcd_layout FREQ_MHZ=368 VECT=1 GUI_VCD=1 # Mostra o GUI do Xcelium para visualizar os sinais
+
+### Visualizar layout:
+        make innovus_gui FREQ_MHZ=368 GUI=1
+
+### Extrair dados dos reportes e plotar gráficos para todas as frequências que foram sintetizadas:
+        cd helper_scripts
+        python3 report_extractor.py
+        python3 report_extractor_innovus.py
+        python3 graph_builder.py
+        python3 graph_builder_innovus.py
+
+### Limpar diretórios para entregável:
+        make clean
