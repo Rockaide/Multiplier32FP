@@ -89,6 +89,8 @@ Exemplo : multiplier32FP_worst_10_160551
 Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
 -----
 ## Exemplo de uso sequencial para o trabalho
+Dentro do diretório principal do projeto (Multiplier32FP):
+
 ### Preparar diretórios
         make setup_dirs
 
