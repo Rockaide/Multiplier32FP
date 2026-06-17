@@ -9,7 +9,8 @@ Este projeto foi estruturado para ser executado nos laboratórios do NUPEDEE ou 
 ## Instruções de Uso
 
 Para executar o fluxo ASIC, abra o terminal na pasta raiz do projeto e utilize o comando make seguido do alvo desejado e, opcionalmente, das variáveis de configuração.
-Sintaxe Básica
+
+### Sintaxe Básica
 
 Bash:
 make <target> [VARIAVEL=valor]
@@ -86,7 +87,10 @@ Arquivos de Saída (Netlist .v, SDF .sdf):
 **O nome das configurações seguirá o modelo <NOME DO RTL>_<TIPO DA LIVRARIA>_$<FREQUÊNCIA DA SÍNTESE>_<TEMPO DE SIMULAÇÃO>
 Exemplo : multiplier32FP_worst_10_160551
 
-Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
+### Para visualizar a lista completa de comandos disponíveis diretamente no terminal, execute: make help.
+
+#### OBS: Os arquivos VCD e sdf_cmd_file são gerados dinamicamente pelos scripts no momento da síntese/layout, ou seja, são tratados como temporários e não constam no entregável final.
+
 -----
 ## Exemplo de uso sequencial para o trabalho
 Dentro do diretório principal do projeto (Multiplier32FP):
